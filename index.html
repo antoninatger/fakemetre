@@ -501,6 +501,7 @@
   <div class="fbtitle" id="vrtitle"></div>
   <div class="fbexpl"  id="vrexpl"></div>
   <div class="ptswrap"><span class="fbpts" id="vrpts"></span></div>
+  <div id="vrmeter"></div>
   <div id="vrsources"></div>
   <button class="mclose" onclick="closeV()" data-i18n="btnContinue">Continuer →</button>
 </div>
@@ -828,6 +829,16 @@ const I18N = {
     submitFalseCorrect: '✅ Oui, c\'est bien FAUX !',
     submitTrueWrong: '❌ Non, c\'était VRAI !',
     submitFalseWrong: '❌ Non, c\'était FAUX !',
+    // ── Jeu : le curseur de croyance, avant et après les sources ──
+    meterMoveNone: '🎚️ Ton curseur est resté à {a} % « vrai » : les sources ne t\'ont pas fait bouger.',
+    meterMoveGood: '🎚️ Tu es passé de {a} % à {b} % « vrai » après avoir lu les sources : tu t\'es rapproché de la bonne réponse.',
+    meterMoveBad: '🎚️ Tu es passé de {a} % à {b} % « vrai » après avoir lu les sources : tu t\'en es éloigné.',
+    bilanMeterStillTitle: 'Ton curseur n\'a jamais bougé',
+    bilanMeterStillTip: 'Le curseur sert à mesurer si les sources te font changer d\'avis. Le déplacer après une lecture, c\'est ça, actualiser une croyance.',
+    bilanMeterGoodTitle: 'Tu actualises ton avis',
+    bilanMeterGoodTip: 'Tu as déplacé ton curseur {n} fois après avoir lu les sources, dont {m} vers la bonne réponse. C\'est exactement ce que doit produire une enquête.',
+    bilanMeterBadTitle: 'Tes lectures t\'éloignent de la réponse',
+    bilanMeterBadTip: 'Tu as déplacé ton curseur {n} fois après avoir lu les sources, mais seulement {m} vers la bonne réponse. Une source qui te conforte n\'est pas forcément une source fiable.',
     // ── Jeu : récapitulatif des sources au verdict ──
     vrSrcTitle: '🔍 Ce que valaient tes sources',
     vrSrcReliable: 'Source fiable',
@@ -1201,6 +1212,16 @@ const I18N = {
     submitFalseCorrect: "✅ Yes, it's FALSE!",
     submitTrueWrong: "❌ No, it was TRUE!",
     submitFalseWrong: "❌ No, it was FALSE!",
+    // ── Game : the belief slider, before and after the sources ──
+    meterMoveNone: '🎚️ Your slider stayed at {a}% "true": the sources did not move you.',
+    meterMoveGood: '🎚️ You went from {a}% to {b}% "true" after reading the sources: you moved closer to the right answer.',
+    meterMoveBad: '🎚️ You went from {a}% to {b}% "true" after reading the sources: you moved further away from it.',
+    bilanMeterStillTitle: 'Your slider never moved',
+    bilanMeterStillTip: 'The slider measures whether the sources change your mind. Moving it after a reading is exactly what updating a belief looks like.',
+    bilanMeterGoodTitle: 'You update your mind',
+    bilanMeterGoodTip: 'You moved your slider {n} times after reading the sources, {m} of them towards the right answer. That is exactly what an investigation should do.',
+    bilanMeterBadTitle: 'Your reading takes you further from the answer',
+    bilanMeterBadTip: 'You moved your slider {n} times after reading the sources, but only {m} towards the right answer. A source that confirms you is not necessarily a reliable one.',
     // ── Game : source recap at the verdict ──
     vrSrcTitle: '🔍 What your sources were worth',
     vrSrcReliable: 'Reliable source',
@@ -1317,12 +1338,16 @@ function applyI18n() {
 // ═══════════════════════════════════════════════
 // ── État de session (réinitialisé à chaque nouvelle partie) ──
 let QS=[], qi=0, score=0, meter=50, uc=0, sh=[], um={}, pend=null, tempMeter=50, gameHistory=[];
+// Position du curseur à l'ouverture de la première source de la question courante :
+// c'est elle qu'on compare à la position au vote pour savoir si l'enquête a servi.
+let meterStart=null;
 // ── État persistant entre les questions / parties ──
 let gameMode=5, currentLevel='junior', playingCustom=false, playingCommunity=false, cursorTutorialSeen=false;
 let currentPackInfo=null; // {title, author} quand on joue un pack communauté, sinon null
 
 function resetGameState(){
   qi=0; score=0; meter=50; uc=0; sh=[]; um={}; pend=null; tempMeter=50; gameHistory=[];
+  meterStart=null;
   currentPackInfo=null;
 }
 
@@ -1581,7 +1606,7 @@ function updCounter(){
 
 function renderQ(){
   const q=QS[qi];
-  meter=50;uc=0;um={};
+  meter=50;uc=0;um={};meterStart=null;
   $('stxt').textContent=q.s;
   $('qn').textContent=qi+1;
   $('sc').textContent=score;
@@ -1627,6 +1652,8 @@ function revealSay(){
 function openSrc(src,idx,btn){
   const isEdit=um[idx]!==undefined;
   pend={src,idx,btn,isEdit};
+  // La croyance de départ, c'est celle d'avant toute lecture.
+  if(meterStart===null) meterStart=meter;
   // Révèle le titre de la source sur le bouton dès la première consultation
   if(!btn.dataset.revealed){
     btn.dataset.revealed='1';
@@ -1882,6 +1909,36 @@ function trust(trusts){
   setTimeout(()=>{$('vzone').style.display='block';},600);
 }
 
+// En deçà de ce déplacement, on considère que le curseur n'a pas bougé : un
+// glissement de deux ou trois pour cent n'est pas un changement d'avis.
+const SEUIL_CURSEUR=5;
+function curseurBouge(depart,arrivee){
+  return Math.abs(arrivee-depart)>=SEUIL_CURSEUR;
+}
+
+// Où le curseur devrait se trouver si le joueur avait raison : tout à droite pour
+// une affirmation vraie, tout à gauche pour une fausse, au milieu quand il n'y a
+// pas de consensus.
+function cibleCurseur(nuance,vrai){
+  return nuance?50:(vrai?100:0);
+}
+
+// Le déplacement a-t-il rapproché le joueur de la bonne réponse ?
+function curseurRapproche(nuance,vrai,depart,arrivee){
+  const cible=cibleCurseur(nuance,vrai);
+  return Math.abs(cible-arrivee)<Math.abs(cible-depart);
+}
+
+// Le curseur de croyance était une promesse non tenue : le joueur le positionnait,
+// lisait les sources, puis votait avec un bouton, et rien ne comparait jamais les
+// deux positions. C'est ici qu'on lui dit ce que son enquête a produit.
+function commentaireCurseur(q,depart,arrivee){
+  const a=Math.round(depart), b=Math.round(arrivee);
+  if(!curseurBouge(a,b)) return t('meterMoveNone').replace('{a}',a);
+  const rapproche=curseurRapproche(q.nuance,q.t,a,b);
+  return t(rapproche?'meterMoveGood':'meterMoveBad').replace('{a}',a).replace('{b}',b);
+}
+
 // Une source se note à l'échelle de Likert en Intermédiaire et en Pro, ainsi que
 // sur les sources « le joueur évalue » du mode Créateur. Ailleurs, c'est le
 // oui/non de trust().
@@ -1954,6 +2011,7 @@ function recapSources(){
 
 function submitV(v){
   const q=QS[qi];$('vzone').style.display='none';
+  const mDepart=(meterStart===null?meter:meterStart), mArrivee=meter;
   
   // Calculer si la réponse est correcte
   let ok, pts, emoji, title, expl;
@@ -2000,6 +2058,7 @@ function submitV(v){
   $('vrexpl').textContent = expl;
   $('vrpts').textContent = (pts >= 0 ? '+' : '') + pts + ' pts';
   $('vrpts').className = 'fbpts ' + (ok ? 'pos' : 'neg');
+  $('vrmeter').textContent = commentaireCurseur(q, mDepart, mArrivee);
   $('vrsources').innerHTML = recapSources();
   
   // Enregistrer dans l'historique pour le bilan
@@ -2009,6 +2068,8 @@ function submitV(v){
     correctAnswer: q.t,
     hasNuance: q.nuance || false,
     wasCorrect: ok,
+    meterStart: Math.round(mDepart),
+    meterEnd: Math.round(mArrivee),
     sourceEvals: []
   };
   // Récupérer les évaluations de sources
@@ -2204,6 +2265,33 @@ function generateBilan(){
       <div>
         <strong>${t('bilanPerfectTitle')}</strong><br>
         <span class="bilan-tip">${t('bilanPerfectTip')}</span>
+      </div>
+    </div>`);
+  }
+
+  // Le curseur sur l'ensemble de la partie : a-t-il bougé, et vers la réponse ?
+  let bouges=0, versLaReponse=0;
+  gameHistory.forEach(h => {
+    if(typeof h.meterStart!=='number' || typeof h.meterEnd!=='number') return;
+    if(!curseurBouge(h.meterStart,h.meterEnd)) return;
+    bouges++;
+    if(curseurRapproche(h.hasNuance,h.correctAnswer,h.meterStart,h.meterEnd)) versLaReponse++;
+  });
+  if(bouges===0){
+    insights.push(`<div class="bilan-item info">
+      <span class="bilan-icon">🎚️</span>
+      <div>
+        <strong>${t('bilanMeterStillTitle')}</strong><br>
+        <span class="bilan-tip">${t('bilanMeterStillTip')}</span>
+      </div>
+    </div>`);
+  } else {
+    const bon = versLaReponse*2 >= bouges;
+    insights.push(`<div class="bilan-item ${bon?'good':'warn'}">
+      <span class="bilan-icon">🎚️</span>
+      <div>
+        <strong>${t(bon?'bilanMeterGoodTitle':'bilanMeterBadTitle')}</strong><br>
+        <span class="bilan-tip">${t(bon?'bilanMeterGoodTip':'bilanMeterBadTip').replace('{n}',bouges).replace('{m}',versLaReponse)}</span>
       </div>
     </div>`);
   }

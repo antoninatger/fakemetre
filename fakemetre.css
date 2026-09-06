@@ -622,16 +622,17 @@ button:focus-visible,a:focus-visible,[tabindex]:focus-visible,
 /* En Intermédiaire et en Pro, c'est le seul endroit où les textes écrits pour
    chaque source sont lus : la modale de verdict s'élargit pour les recevoir,
    afin que les quatre tiennent à l'écran sans défiler en 1440 px. */
-#mvr{max-width:640px;}
-/* En-tête resserré : le verdict porte maintenant quatre feedbacks de plus. */
+#mvr{max-width:700px;max-height:92vh;}
+/* En-tête resserré : le verdict porte maintenant le curseur et quatre feedbacks
+   de plus qu'avant. */
 #mvr .fbemoji{font-size:2rem;margin-bottom:4px;}
 #mvr .fbtitle{font-size:1.2rem;margin-bottom:8px;}
-#mvr .fbexpl{margin-bottom:10px;}
-#vrsources{margin:14px 0 16px;text-align:left;}
+#mvr .fbexpl{margin-bottom:10px;line-height:1.48;}
+#vrsources{margin:12px 0 14px;text-align:left;}
 .vrsrc-title{font-family:'Fredoka One',cursive;font-size:.95rem;color:var(--acc);
   text-align:center;margin-bottom:9px;}
 .vrsrc{border-left:3px solid var(--bord);border-radius:8px;
-  background:rgba(255,255,255,.04);padding:8px 11px;margin-bottom:7px;}
+  background:rgba(255,255,255,.04);padding:7px 11px;margin-bottom:7px;}
 .vrsrc.ok{border-left-color:var(--gr);}
 .vrsrc.ko{border-left-color:var(--rd);}
 .vrsrc.mid,.vrsrc.skip{border-left-color:var(--acc);}
@@ -657,3 +658,9 @@ button:focus-visible,a:focus-visible,[tabindex]:focus-visible,
 @media(max-width:560px){
   .vrsrc-meta,.vrsrc-fb{margin-left:0;}
 }
+
+/* ── 9. Verdict : ce que le curseur de croyance a fait pendant l'enquête ── */
+#vrmeter{margin:8px 0 0;padding:8px 12px;border-radius:10px;
+  background:rgba(79,163,247,.10);border:1px solid rgba(79,163,247,.28);
+  color:var(--tx);font-size:.84rem;font-weight:700;line-height:1.45;text-align:center;}
+#vrmeter:empty{display:none;}

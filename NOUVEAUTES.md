@@ -1,5 +1,47 @@
 # Nouveautés FakeMètre
 
+## Mise à jour, 6 septembre 2026 (onze affirmations vraies en Pro, et le ménage du corpus)
+
+### 🎯 Onze affirmations VRAIES ajoutées au niveau Fact-Checker (décision D22)
+
+Le niveau Pro souffrait d'un défaut de conception : le corpus penchait tellement vers FAUX (15 VRAI sur 59) qu'un joueur qui répondait « faux » à tout ce qui a l'air compliqué gagnait sans réfléchir. Onze affirmations **vraies, vérifiables et contre-intuitives** entrent au niveau Pro : elles déclenchent le réflexe « ça sent l'exagération » avant que la vérification ne le démente.
+
+Paracétamol au mécanisme inexpliqué · transplantation fécale approuvée par la FDA · couche d'ozone qui se referme vers 2066 · forêt française doublée depuis le XIXᵉ siècle · pluies acides réglées par le traité de 1979 · Cléopâtre plus proche de nous que des pyramides · mammouths encore vivants sous l'Ancien Empire · rotation des mots de passe déconseillée par la CNIL et l'ANSSI · plus d'abonnements mobiles que d'humains · alcool divisé par 2,5 en France depuis 1961 · mortalité des moins de 5 ans plus que divisée par deux depuis 1990.
+
+Toutes les sources de référence ont été ouvertes et lues ; les sources fiables portent une URL réelle quand elle existe.
+
+### 🎲 Le motif « 2 fiables sur 4 » n'est plus devinable
+
+124 questions sur 126 avaient exactement deux sources fiables et deux non fiables : un joueur qui en identifiait deux savait par déduction ce qu'étaient les deux autres. **Vingt et une questions Pro sont désormais hors de ce motif** : huit en 3 fiables sur 4, six en 1 sur 4, sept en 2 sur 3. Le barème s'y adapte seul, `maxPtsQuestion()` comptant la composition réelle de chaque question.
+
+Neuf questions existantes ont été retouchées pour cela. Le principe d'écriture : **une source fiable qui ne prouve pas l'affirmation** (une notice officielle muette sur la question posée, une étude qui refuse la causalité, une enquête qui mesure la diffusion d'une croyance et non sa validité) et **une source douteuse qui a l'air sérieuse** (un raisonnement valide sur une prémisse fausse, un article juste mais non daté). McKinsey passe en source non fiable sur la question de l'IA et de l'emploi : le cabinet vend le conseil en transformation qu'il prédit, et ce conflit d'intérêts servait déjà à écarter le directeur IA de la même question.
+
+### 🗣️ Le ton du niveau Pro (décision V7)
+
+Les feedbacks de source s'ouvraient sur une interjection héritée du niveau Junior (« Piégé(e) ! », « Dommage ! », « Bravo ! »). Le niveau Pro s'adresse aussi à des lycéens et à des adultes en conférence : **445 interjections retirées par langue**. La leçon est conservée ; le récapitulatif affiché au verdict marque déjà chaque source d'un ✓ ou d'un ✗. Junior et Enquêteur gardent leur registre.
+
+### 🔧 Exactitude — neuf corrections
+
+- **Pluton** repasse en FAUX. Avec le rayon mesuré par New Horizons en 2015 (1 188 km), la surface de Pluton vaut 4π×R², soit environ 17,7 millions de km² : plus que les 17,1 millions de la Russie. L'affirmation était vraie tant qu'on estimait ce rayon à 1 150 km. L'encyclopédie en ligne de la question devient une source **non fiable** : elle donne encore l'ancien chiffre, sans le dater.
+- **The Lancet → eLife** : l'étude Protsiv 2020 sur la baisse de la température corporelle est parue dans eLife.
+- **Cochrane / Ernst → NHMRC** : la synthèse sur l'homéopathie est celle du conseil australien de la santé et de la recherche médicale (2015) — 57 revues systématiques, 61 affections.
+- **Vaccins et autisme** : le titre de la source et sa citation donnaient deux chiffres différents. Les deux disent désormais 138 études et 23 millions d'enfants ; premier auteur Di Pietrantonj ; le lien renvoie à la Cochrane Library.
+- **FAO** : les 14,5 % viennent du rapport de 2013, pas de « Livestock's Long Shadow » (2006), qui avançait 18 %.
+- **Munich Re** : l'assureur parle d'un triplement des événements dommageables depuis 1980, pas d'une multiplication par cinq.
+- **Jeux vidéo** : le verdict VRAI contredisait une explication qui concluait à une simplification. La question passe en FAUX nuancé, miroir exact de celle sur le bio.
+- **Bilingues** : l'explication annonçait une nuance que le champ `nuance` ne portait pas. Un joueur qui répondait « pas de consensus clair » perdait des points ; il en gagne.
+- **Carottes** : deux questions Junior posaient la même affirmation avec le même verdict. Elles sont fusionnées ; celle qui reste garde l'origine du mythe — la propagande britannique de 1940 destinée à cacher le radar — et l'archive de l'Imperial War Museum.
+
+Un bug ancien corrigé au passage : côté anglais, une source fiable portait la clé `db` au lieu de `dg`. Un joueur qui s'en méfiait ne lisait aucun retour.
+
+### 📌 Ce qui reste à faire
+
+**Le niveau Pro est à 25 VRAI sur 70, soit 35,7 %.** La recette de la tâche D3 visait 38 %, ce qui demanderait 27 VRAI : les onze retenues n'y suffisent pas arithmétiquement. **Deux affirmations vraies restent à écrire** — rédigées, sourcées et vérifiées sur le modèle des douze candidates de la décision D19 — et à faire arbitrer par Antonin.
+
+> **Total : +11 questions Pro, −1 question Junior**, en français **et** en anglais. Corpus : 23 Junior, 43 Enquêteur, 70 Fact-Checker.
+
+---
+
 ## Mise à jour, 27 juin 2026 (question « toucher un animal sauvage »)
 
 ### 🦌 1 nouvelle question Enquêteur, où le format ne dit RIEN de la fiabilité

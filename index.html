@@ -3930,17 +3930,24 @@ async function sendFeedback(){
   btn.disabled = true;
   btn.textContent = '⏳ Envoi…';
 
+  // Web3Forms pose « email » en Reply-To du message qu'il expédie. Y mettre
+  // « non renseigné » quand le champ est vide fabrique un en-tête invalide, et
+  // les filtres anti-spam — Outlook et Hotmail en tête — classent le message :
+  // l'API répond « success », l'avis n'arrive jamais. Le champ n'est pas
+  // obligatoire, on ne l'envoie que s'il est vraiment rempli.
+  const envoi = {
+    access_key: 'ef1fe549-c616-4a27-a6c2-97f06caa913d',
+    subject: t('feedbackEmailSubject') + (name ? ' — ' + name : ''),
+    name: name || 'Anonyme',
+    message: msg
+  };
+  if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) envoi.email = email;
+
   try {
     const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: {'Content-Type':'application/json','Accept':'application/json'},
-      body: JSON.stringify({
-        access_key: 'ef1fe549-c616-4a27-a6c2-97f06caa913d',
-        subject: t('feedbackEmailSubject') + (name ? ' — ' + name : ''),
-        name: name || 'Anonyme',
-        email: email || 'non renseigné',
-        message: msg
-      })
+      body: JSON.stringify(envoi)
     });
     const data = await res.json();
     if(data.success){
@@ -4079,13 +4086,15 @@ async function sendPostGameMessage(){
   if(toCreator) parts.push(`\n>> Message au createur >>\n${toCreator}`);
   if(sugg) parts.push(`\n>> Suggestion d'affirmation / remarque >>\n${sugg}`);
   try{
+    // Pas de champ e-mail dans ce formulaire de fin de partie : on n'envoie
+    // donc pas « email » du tout, plutôt qu'un Reply-To invalide qui ferait
+    // classer le message en indésirable (voir sendFeedback plus haut).
     const res=await fetch('https://api.web3forms.com/submit',{
       method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
       body:JSON.stringify({
         access_key:'ef1fe549-c616-4a27-a6c2-97f06caa913d',
         subject:t('finalMsgEmailSubject')+(name?' — '+name:''),
         name:name||'Joueur anonyme',
-        email:'non renseigné',
         message:parts.join('\n')
       })
     });

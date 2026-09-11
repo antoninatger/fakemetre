@@ -217,8 +217,8 @@ function buildBook(src){
   const year=escH(src.bookYear||'');
   const publisher=escH(src.bookPublisher||'');
   const body=escH(src.say);
-  const spineColors={livre:'#1a3a6e',manuel:'#2a5a2a','encyclopédie':'#6a1a1a',roman:'#4a1a5a',guide:'#4a3a1a',encyclopedia:'#6a1a1a',textbook:'#2a5a2a',novel:'#4a1a5a',book:'#1a3a6e'};
-  const typeLabels={livre:{fr:'LIVRE',en:'BOOK'},manuel:{fr:'MANUEL',en:'TEXTBOOK'},'encyclopédie':{fr:'ENCYCLOPÉDIE',en:'ENCYCLOPAEDIA'},roman:{fr:'ROMAN',en:'NOVEL'},guide:{fr:'GUIDE',en:'GUIDE'},encyclopedia:{fr:'ENCYCLOPÉDIE',en:'ENCYCLOPAEDIA'},textbook:{fr:'MANUEL',en:'TEXTBOOK'},novel:{fr:'ROMAN',en:'NOVEL'},book:{fr:'LIVRE',en:'BOOK'}};
+  const spineColors={livre:'#1a3a6e',manuel:'#2a5a2a','encyclopédie':'#6a1a1a',roman:'#4a1a5a',guide:'#4a3a1a',dictionnaire:'#5a3a0a',encyclopedia:'#6a1a1a',textbook:'#2a5a2a',novel:'#4a1a5a',book:'#1a3a6e',dictionary:'#5a3a0a'};
+  const typeLabels={livre:{fr:'LIVRE',en:'BOOK'},manuel:{fr:'MANUEL',en:'TEXTBOOK'},'encyclopédie':{fr:'ENCYCLOPÉDIE',en:'ENCYCLOPAEDIA'},roman:{fr:'ROMAN',en:'NOVEL'},guide:{fr:'GUIDE',en:'GUIDE'},dictionnaire:{fr:'DICTIONNAIRE',en:'DICTIONARY'},encyclopedia:{fr:'ENCYCLOPÉDIE',en:'ENCYCLOPAEDIA'},textbook:{fr:'MANUEL',en:'TEXTBOOK'},novel:{fr:'ROMAN',en:'NOVEL'},book:{fr:'LIVRE',en:'BOOK'},dictionary:{fr:'DICTIONNAIRE',en:'DICTIONARY'}};
   const spineColor=spineColors[btype]||'#1a3a6e';
   const typeLabel=(typeLabels[btype]||{fr:'LIVRE',en:'BOOK'})[isEn?'en':'fr'];
   const foot=[author?'✍️ '+author:'',year?'📅 '+year:'',publisher?'🏢 '+publisher:''].filter(Boolean).join(' · ');

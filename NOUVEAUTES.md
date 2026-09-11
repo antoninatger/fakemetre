@@ -1,5 +1,43 @@
 # Nouveautés FakeMètre
 
+## Mise à jour, 11 septembre 2026 (le clavier QWERTY « conçu pour ralentir »)
+
+### ⌨️ Une affirmation de plus au niveau Fact-Checker
+
+« Le clavier QWERTY, et l'AZERTY français qui en dérive, ont été conçus pour ralentir volontairement la frappe » → **FAUX**. « Conçu pour ralentir » prête aux inventeurs une intention qu'aucun document d'époque ne formule. Ce qui est établi est une contrainte mécanique : sur les machines de 1870, les tiges de deux lettres frappées coup sur coup pouvaient s'accrocher, et la disposition éloigne certaines paires fréquentes — le but étant de frapper **sans s'interrompre**, l'inverse de ralentir. Et cette explication-là est elle-même discutée : Yasuoka et Yasuoka (*Zinbun*, université de Kyoto, 2011) font remonter la disposition aux télégraphistes qui transcrivaient le morse. L'AZERTY, lui, apparaît vers 1900 sans inventeur identifié ni document d'origine.
+
+**Pourquoi le niveau Pro et pas Enquêteur Junior.** C'est bien un mythe tenace, mais les mythes du niveau Enquêteur se réfutent par un fait de remplacement propre (le bulletin scolaire d'Einstein, les casques vikings sans cornes). Ici il n'y en a pas : la réfutation tient à une distinction — **l'intention prêtée n'est pas l'effet mécanique** — et la vraie cause reste débattue entre historiens. Le joueur doit accepter une réponse incomplète (« on ne sait pas exactement, mais pas ça »), ce qui est le geste du niveau Pro, et c'est la même nuance que l'item sur 1933 (« légal » n'est pas « démocratique »).
+
+Les quatre sources, en **3 fiables sur 4** — hors du motif 2/4 :
+- un **historien des techniques** (fiable) qui sépare la contrainte de l'intention, et note qu'une machine vendue pour aller plus vite que la plume n'avait aucun intérêt commercial à freiner ;
+- l'**article de *Zinbun*** (fiable), qui annonce ses archives et sa période — et qui **contredit en partie la source précédente** sur la cause réelle : deux sources fiables peuvent ne pas être d'accord entre elles tout en écartant la même légende ;
+- une **notice d'encyclopédie en ligne** (fiable) qui donne l'explication classique du blocage des tiges, mais sans date ni références et comme si la question était réglée : fiable ne veut pas dire infaillible, et une source peut suffire à écarter une légende sans donner la réponse définitive ;
+- un **commentaire de forum** (non fiable) qui s'appuie sur une **étude réelle** — celle de la marine américaine, 1944 — menée sous la direction d'August Dvorak lui-même, promoteur du clavier concurrent. Le test de l'administration fédérale de 1956 n'avait trouvé aucun avantage, et la réévaluation de 1990 dans une revue d'économie a montré que les gains annoncés ne tenaient pas. C'est la source la plus piégeuse de l'item : citer une étude réelle ne suffit pas, il faut savoir qui l'a faite — et « le Dvorak est plus rapide » ne prouve pas « le QWERTY a été fait pour freiner ».
+
+> **Total : +1 question Pro**, en français **et** en anglais. Corpus : 23 Junior, 43 Enquêteur, **72 Fact-Checker**.
+>
+> ⚠️ **Effet sur la recette D3** : l'item est FAUX, donc le niveau Pro passe de **26 VRAI sur 71 (36,6 %) à 26 sur 72 (36,1 %)**. Pour atteindre les 38 % visés il faudrait désormais **28 VRAI**, soit **deux** affirmations vraies à écrire au lieu d'une.
+
+---
+
+## Mise à jour, 8 septembre 2026 (« ramdam » vient de « ramadan »)
+
+### 📖 Une affirmation VRAIE de plus au niveau Fact-Checker
+
+« Le mot ramdam, qui signifie faire du bruit, vient de ramadan » → **VRAI**. Attesté en 1890 dans l'argot des soldats de l'Armée d'Afrique, emprunté à l'arabe maghrébin *ramdān* : les veillées qui suivaient la rupture du jeûne étaient bruyantes, et les soldats ont retenu le bruit. Le Trésor de la langue française (CNRTL) et le Larousse donnent la même origine ; en 2010, le concours Francomot a proposé « ramdam » pour remplacer « buzz ».
+
+Ce qui trompe ici : les fausses étymologies pullulent, et celle-ci a l'air trop belle. Les quatre sources travaillent ce réflexe :
+- le **Trésor de la langue française** (fiable), avec date, langue d'emprunt et mécanisme du sens ;
+- une **historienne de la langue** (fiable), qui replace le mot dans la série *toubib, bled, kif* ;
+- un **commentaire sous un article** (non fiable) qui refuse l'origine arabe par hostilité — « tout ça pour nous faire croire à l'influence de l'arabe sur le français ! » — en l'habillant d'une onomatopée (« comme badaboum ») : le motif se lit dans la dernière phrase, et l'argument tombe dès qu'on ouvre un dictionnaire. C'est la réaction que l'affirmation déclenche pour de vrai, et le feedback dit ce qu'elle est : une conclusion refusée parce qu'elle déplaît, pas une objection ;
+- une **publication virale** (non fiable) qui a raison sur le verdict mais invente l'histoire (Napoléon en Égypte, 1798, ses mémoires) : avoir raison par accident ne rend pas une source fiable.
+
+Le rendu des sources « livre » accepte désormais le type **dictionnaire** (`bookType:'dictionnaire'` / `'dictionary'`), avec son étiquette et sa tranche.
+
+> **Total : +1 question Pro**, en français **et** en anglais. Le niveau Pro passe à **26 VRAI sur 71 (36,6 %)** ; il reste **une** affirmation vraie à écrire pour atteindre les 38 % visés par la tâche D3.
+
+---
+
 ## Mise à jour, 6 septembre 2026 (onze affirmations vraies en Pro, et le ménage du corpus)
 
 ### 🎯 Onze affirmations VRAIES ajoutées au niveau Fact-Checker (décision D22)

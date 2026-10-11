@@ -33,7 +33,8 @@
   <h1 data-i18n="h1">🔍 FakeMètre</h1>
   <p class="sub" data-i18n="sub">Vraie info ou fake news ? Trouve les bonnes sources !</p>
   <p class="author"><span data-i18n="authorBy">par</span> Antonin Atger &nbsp;|&nbsp; <a href="mailto:contact@antoninatger.com">contact(at)antoninatger.com</a> &nbsp;|&nbsp; <a href="https://antoninatger.com" target="_blank">antoninatger.com</a></p>
-  <p style="margin-top:6px;"><button id="feedback-btn" onclick="openFeedback()" data-i18n="feedbackBtnLabel">💬 Une question ? Une remarque ? Une suggestion ? Cliquez ici !</button></p>
+  <p style="margin-top:6px;"><button id="feedback-btn" onclick="openFeedback()" data-i18n="feedbackBtnLabel">💬 Une question ? Une remarque ? Une suggestion ? Cliquez ici !</button>
+    <button id="partage-btn" type="button" onclick="window.PartageJeux&&PartageJeux.ouvrir('partage')" data-i18n="shareBtnLabel" style="margin-left:6px">📣 Faire connaître le jeu</button></p>
 </header>
 
 <!-- LEVEL SELECTOR -->
@@ -875,6 +876,7 @@ const I18N = {
     noSearchAlert: "🔍 Impossible de trouver cette source sur internet !\n\nC'est une source fictive ou trop générique pour être vérifiée. Dans la vraie vie, c'est un signal d'alerte : une source introuvable est suspecte !",
     // ── Feedback ──
     feedbackBtnLabel: '💬 Une question ? Une remarque ? Une suggestion ? Cliquez ici !',
+    shareBtnLabel: '📣 Faire connaître le jeu',
     feedbackTitle: '💬 Votre avis sur FakeMètre',
     feedbackSub: 'Questions, remarques, suggestions… tout est bienvenu ! Je lis tous les messages.',
     feedbackLabelName: 'Votre prénom (optionnel)',
@@ -1258,6 +1260,7 @@ const I18N = {
     noSearchAlert: "🔍 This source cannot be found online!\n\nIt's a fictional or too generic source to verify. In real life, this is a red flag: a source that can't be found is suspicious!",
     // ── Feedback ──
     feedbackBtnLabel: '💬 A question? A remark? A suggestion? Click here!',
+    shareBtnLabel: '📣 Share the game',
     feedbackTitle: '💬 Your feedback on FakeMeter',
     feedbackSub: 'Questions, remarks, suggestions… all welcome! I read every message.',
     feedbackLabelName: 'Your name (optional)',
@@ -2141,6 +2144,7 @@ function showFinal(){
     <div class="fscore" id="fscore-num">0&nbsp;pts</div>
     ${bilan ? `<div class="bilan-perso">${bilan}</div>` : ''}
     <div class="ftips"><h3>${t('finalTipsTitle')}</h3>${tips.map(tp=>`<div class="tip"><span>${tp[0]}</span><span>${tp[1]}</span></div>`).join('')}</div>
+    <div class="pj-rangee" style="margin:14px 0"></div>
     ${finalMsgHTML()}
     <button id="rbtn" onclick="restart()">${t('btnReplay')}</button>
     <button id="mbtn" onclick="chooseMode()">${t('btnMenu')}</button>`;
@@ -4157,5 +4161,6 @@ try{
   </div>
 </div>
 
+<script src="https://antoninatger.github.io/jeux/partage.js" defer data-jeu="FakeMètre" data-flottant="non" data-avis="non" data-url="https://antoninatger.github.io/fakemetre/" data-texte="FakeMètre, un jeu gratuit pour apprendre à vérifier une information, source par source" data-texte-en="FakeMeter, a free game to learn to check information, source by source"></script>
 </body>
 </html>

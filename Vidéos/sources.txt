@@ -33,7 +33,7 @@ grande_muraille_espace_en.mp4
 
 brut_foudre_fr.mp4
   Question : "La foudre ne tombe jamais deux fois au même endroit" [FR]
-  Rôle     : [good] TikTok Brut — debunk, ~55M vues
+  Rôle     : [retirée] TikTok Brut — remplacée par l'ingénieur SETE (le retour justifiait la fiabilité par les vues)
   URL      : https://www.tiktok.com/@brutofficiel/video/7215593121181191450
 
 lumni_foudre_fr.mp4

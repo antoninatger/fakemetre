@@ -1,5 +1,58 @@
 # Nouveautés FakeMètre
 
+## Mise à jour, 1er octobre 2026 (une enquête en étapes, et des personnes à vérifier)
+
+### 🪜 Tous niveaux : l'enquête se déroule étape par étape
+
+1. L'affirmation s'affiche seule, avec un bouton « J'ai lu l'affirmation ».
+2. Le curseur apparaît : « Évalue cette affirmation avec le curseur ».
+3. Le bouton « Révéler les sources » fait apparaître les sources.
+4. Après chaque source (confiance oui/non ou note sur 7, comme avant), le petit curseur est **directement là**, à sa position du moment, avec la question « Veux-tu modifier ton curseur ? » et un seul bouton « Continuer ». Fini le « Oui / Non » avant d'ajuster : on le bouge si on veut.
+5. Le vote n'apparaît qu'une fois **toutes** les sources ouvertes.
+
+En mode histoire, la scène fait déjà lire l'affirmation : le jeu commence directement au curseur.
+
+### 🔍 Fact-Checker Confirmé : les personnes n'ont plus qu'un nom
+
+Toute source qui est une personne (chercheur, médecin, influenceur, coach, blogueur, youtubeur…) n'affiche plus que **un prénom et un nom**, son support (« Plateau télé », « Publication Instagram »…) et sa citation, sans sa profession. La loupe « Enquêter sur cette personne » ouvre un faux moteur de recherche, **Fouineur**, avec 3 résultats : page d'université ou d'hôpital, profil professionnel, article de presse, fiche de publications scientifiques, chaîne vidéo, page de vente… C'est en les lisant que l'élève découvre si la personne est compétente **dans le domaine dont elle parle**. Environ une personne sur trois a un **homonyme** parmi les résultats, pour apprendre à vérifier qu'on parle de la bonne personne. Le vrai profil est révélé au verdict.
+
+- 65 personnes, 195 fausses pages, en français **et** en anglais. Personnes, institutions, médias et sites sont **fictifs**.
+- Les trois personnes réelles (Andrew Wakefield, William Happer, Nicole Avena) gardent leur vrai nom : leur loupe ouvre une vraie recherche sur Internet, rien n'est inventé à leur sujet.
+- Cinq citations ont été retouchées parce qu'elles dévoilaient le métier (« mes patients », « aux urgences »…).
+
+> Fichiers : `personnes_pro.js` (les personnes et leurs pages), `enquete.js` (le moteur de recherche), styles en fin de `fakemetre.css`. Sauvegarde des fichiers d'avant dans `_sauvegarde-2026-10-01/`.
+
+---
+
+## Mise à jour, 26 septembre 2026 (mode histoire)
+
+### 📖 Apprenti Détective : le mode histoire « La Gazette du préau »
+
+Une nouvelle façon de jouer au niveau Apprenti. Le joueur devient reporter du journal du collège pendant une semaine : chaque jour, du lundi au vendredi, une rumeur arrive à la rédaction (groupe WhatsApp de la classe, mot passé en cours, vidéo dans le bus, magazine…). Il enquête avec les sources, comme d'habitude, puis répond à la rédactrice en chef : **on publie ou pas ?**
+
+- **Personnage** : prénom et « il » ou « elle » (pour les accords du récit) ; avatar facultatif (coiffure, couleur des cheveux, de peau, du tee-shirt, lunettes). Gardé en mémoire pour la partie suivante.
+- **Questions tirées au sort** parmi les affirmations Apprenti, amenées par des scènes variées ; après le verdict, une conséquence dans la Gazette (une vraie info en une, un rectificatif, un scoop raté).
+- **Jauge « confiance des lecteurs »** : +10 par bonne réponse, −15 pour une fausse info publiée, −10 pour une vraie info écartée. Publier une fake news coûte plus cher que rater un scoop.
+- **Trois fins** : carte de presse officielle (80 % et plus), reporter stagiaire (45 à 79 %), édition reportée (moins de 45 %). Le score, le bilan et les conseils restent affichés en dessous.
+
+> En français seulement pour l'instant (la carte n'apparaît pas dans la version anglaise). Fichiers : `histoire.js` et `histoire.css`, chargés par `index.html`.
+
+---
+
+## Mise à jour, 24 septembre 2026 (la Lune qui s'éloigne, les empreintes des jumeaux)
+
+### 🌙 Apprenti Détective : « La Lune s'éloigne de la Terre de quelques centimètres chaque année » → **VRAI**
+
+Environ 3,8 cm par an, mesurés depuis 1969 par laser sur les miroirs déposés par les missions Apollo (NASA, JPL ; en France, la station laser de l'Observatoire de la Côte d'Azur). Elle paraît fausse, et c'est le but : le niveau Junior manquait d'affirmations vraies (8 sur 23). Sources : la **NASA** et un **astronome** qui fait les mesures (fiables) ; **« mon intuition »** (« je la vois toujours pareille ») et un **post viral** qui part du fait vrai mais l'exagère (« dans 10 ans on ne la verra plus ») (non fiables) : une info vraie peut être déformée.
+
+### 🧬 Enquêteur Junior : « Les vrais jumeaux ont des empreintes digitales identiques » → **FAUX**
+
+Même ADN, mais les empreintes se dessinent vers le 3e-4e mois de grossesse et dépendent de la position du fœtus et de la pression autour des doigts. Placée à côté des ongles et cheveux après la mort (déjà présente à ce niveau, non dupliquée) : un mythe réfuté par un fait de remplacement propre. Sources : la **police scientifique** et une **généticienne** (fiables) ; une **série policière** et **« mon cousin »** et son « c'est logique » (non fiables).
+
+> **Total : +1 question Junior (vraie), +1 question Enquêteur (fausse)**, en français **et** en anglais, ajoutées en fin de tableau pour garder l'alignement FR/EN. Corpus : **24 Junior (9 VRAI), 44 Enquêteur**, 72 Fact-Checker.
+
+---
+
 ## Mise à jour, 11 septembre 2026 (le clavier QWERTY « conçu pour ralentir »)
 
 ### ⌨️ Une affirmation de plus au niveau Fact-Checker

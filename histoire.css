@@ -1,0 +1,101 @@
+/* FakeMètre · Mode histoire « La Gazette du préau » (voir histoire.js) */
+
+/* Carte sur l'écran des modes */
+.modecard.st-mode{flex:1 1 100%;max-width:none;width:100%;display:flex;align-items:center;gap:18px;text-align:left;position:relative;padding:22px 26px;
+  background:linear-gradient(135deg,rgba(247,201,72,.10),rgba(79,163,247,.08)),var(--panel);border-color:rgba(247,201,72,.35);}
+.modecard.st-mode .mc-icon{margin:0;font-size:2.6rem;}
+.st-mode-sub{font-weight:800;color:var(--tx);font-size:.9rem;margin:-2px 0 4px;}
+.st-new{position:absolute;top:10px;right:12px;background:var(--acc);color:#1a1200;font-size:.62rem;font-weight:800;letter-spacing:.8px;text-transform:uppercase;border-radius:50px;padding:3px 9px;}
+
+/* Création du personnage */
+#st-setup{width:100%;max-width:560px;padding:20px 0;animation:screenIn .32s ease both;}
+.st-h2{font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--acc);margin-bottom:8px;text-align:center;}
+.st-lead{color:var(--mu);font-weight:700;font-size:.9rem;line-height:1.55;text-align:center;margin-bottom:20px;}
+.st-setup-grid{display:flex;gap:20px;align-items:center;background:var(--panel);border:1px solid var(--bord);border-radius:20px;padding:18px 20px;margin-bottom:12px;}
+.st-preview{flex:0 0 auto;}
+.st-fields{flex:1;min-width:0;}
+.st-label{font-weight:800;font-size:.8rem;color:var(--mu);text-transform:uppercase;letter-spacing:.6px;margin:12px 0 6px;display:block;}
+.st-fields .st-label:first-child{margin-top:0;}
+.st-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.st-chip{background:var(--card);border:2px solid var(--bord);color:var(--tx);border-radius:50px;padding:8px 14px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;transition:all .18s;}
+.st-chip:hover{border-color:var(--mu);}
+.st-chip.on{border-color:var(--acc);background:rgba(247,201,72,.14);color:var(--acc);}
+.st-swatches{display:flex;flex-wrap:wrap;gap:10px;}
+.st-sw{width:34px;height:34px;border-radius:50%;border:3px solid transparent;cursor:pointer;box-shadow:0 0 0 1px rgba(255,255,255,.18) inset;transition:transform .15s;}
+.st-sw:hover{transform:scale(1.1);}
+.st-sw.on{border-color:var(--acc);transform:scale(1.12);}
+.st-details{background:var(--panel);border:1px solid var(--bord);border-radius:16px;padding:12px 18px;margin-bottom:14px;}
+.st-details summary{cursor:pointer;font-weight:800;color:var(--tx);font-size:.92rem;}
+.st-details summary span{color:var(--mu);font-weight:700;}
+.st-details[open] summary{margin-bottom:4px;}
+.st-err{color:var(--rd);font-weight:800;font-size:.85rem;min-height:1.2em;text-align:center;margin-bottom:6px;}
+.st-go{margin-top:14px;}
+
+/* Scènes du récit */
+#st-scene{width:100%;max-width:620px;animation:screenIn .32s ease both;}
+.st-card{background:var(--panel);border:1px solid var(--bord);border-radius:20px;padding:22px 24px;box-shadow:var(--shadow-1);position:relative;overflow:hidden;}
+.st-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--acc),#f7a548);}
+.st-card p{font-size:.98rem;line-height:1.6;margin-bottom:12px;}
+.st-day{font-family:'Fredoka One',cursive;color:var(--acc);font-size:1.15rem;margin-bottom:12px;}
+.st-row{display:flex;gap:14px;align-items:flex-start;margin-bottom:4px;}
+.st-row p{margin:0 0 12px;}
+.st-echo{color:var(--mu);font-style:italic;border-left:3px solid var(--bord);padding-left:12px;}
+.st-goal{background:rgba(247,201,72,.1);border-radius:12px;padding:10px 14px;}
+.st-speech{background:var(--card);border-radius:16px;padding:12px 16px;font-size:.95rem;line-height:1.55;margin:4px 0 6px;}
+.st-speech i{color:var(--mu);}
+.st-who{display:block;font-family:'Fredoka One',cursive;color:var(--bl);font-size:.9rem;margin-bottom:2px;}
+.st-support{display:flex;gap:12px;align-items:flex-start;margin:6px 0 14px;padding:14px 16px;font-weight:800;font-size:1.02rem;line-height:1.45;}
+.st-sup-ico{font-size:1.4rem;line-height:1;}
+.st-tel{background:#1f7a4f;color:#fff;border-radius:18px 18px 18px 4px;max-width:92%;}
+.st-oral{background:#fff;color:#14222c;border-radius:18px 18px 18px 4px;max-width:92%;}
+.st-papier{background:#fff7c2;color:#3a2f00;border-radius:4px;transform:rotate(-1deg);box-shadow:0 6px 14px rgba(0,0,0,.3);font-family:'Comic Sans MS','Chalkboard SE','Nunito',cursive;}
+.st-video{background:#000;color:#fff;border-radius:12px;border:2px solid #333;text-transform:uppercase;letter-spacing:.3px;}
+.st-magazine{background:#fdf2f6;color:#7a1238;border-radius:6px;font-family:Georgia,serif;font-style:italic;border-top:6px solid #d63a6e;}
+
+/* Bandeau pendant l'enquête */
+#st-banner{align-items:center;gap:12px;background:var(--panel);border:1px solid rgba(247,201,72,.3);border-radius:16px;padding:8px 14px;margin-bottom:14px;}
+.st-ban-txt{font-size:.85rem;line-height:1.3;flex:1;min-width:0;}
+.st-ban-txt span{color:var(--mu);font-weight:700;font-size:.75rem;}
+.st-gauge{flex:0 1 200px;min-width:120px;}
+.st-gauge-lbl{font-size:.7rem;font-weight:800;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
+.st-gauge-lbl b{color:var(--tx);}
+.st-gauge-bg{height:10px;background:var(--card);border-radius:10px;overflow:hidden;}
+.st-gauge-fill{height:100%;border-radius:10px;transition:width .6s ease;}
+.st-gauge-fill.haut{background:var(--gr);}
+.st-gauge-fill.moyen{background:var(--acc);}
+.st-gauge-fill.bas{background:var(--rd);}
+.vbtn small{display:block;font-family:'Nunito',sans-serif;font-weight:800;font-size:.7rem;opacity:.75;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
+
+/* Conséquence dans la modale du résultat */
+.st-suite{border-radius:14px;padding:12px 14px;margin:0 0 12px;font-size:.9rem;line-height:1.5;text-align:left;}
+.st-suite p{margin:0 0 6px;}
+.st-suite.pos{background:rgba(62,207,142,.12);border-left:4px solid var(--gr);}
+.st-suite.neg{background:rgba(247,95,95,.12);border-left:4px solid var(--rd);}
+.st-delta{font-size:.78rem;font-weight:800;color:var(--mu);}
+
+/* Fin de semaine */
+.st-fin{background:var(--panel);border:1px solid var(--bord);border-radius:20px;padding:22px 22px 18px;margin-bottom:24px;text-align:left;}
+.st-fin p{line-height:1.6;margin-bottom:10px;}
+.st-bilan{text-align:center;color:var(--mu);font-weight:800;font-size:.85rem;margin-top:8px;}
+.st-press{max-width:340px;margin:16px auto 8px;border-radius:16px;overflow:hidden;background:#fff;color:#14222c;box-shadow:var(--shadow-2);transform:rotate(-1.5deg);}
+.st-press-top{font-family:'Fredoka One',cursive;letter-spacing:3px;text-align:center;padding:8px;color:#1a1200;background:var(--acc);}
+.st-press.argent .st-press-top{background:#c9d3de;}
+.st-press-body{display:flex;gap:14px;align-items:center;padding:14px 16px;}
+.st-press-name{font-family:'Fredoka One',cursive;font-size:1.35rem;word-break:break-word;}
+.st-press-role{font-weight:800;color:#a8740a;text-transform:uppercase;font-size:.78rem;letter-spacing:.6px;}
+.st-press.argent .st-press-role{color:#5a6b7d;}
+.st-press-org{font-size:.75rem;color:#5a6b7d;font-weight:700;margin-top:4px;}
+#st-perso-btn{background:var(--panel);color:var(--tx);border:2px solid var(--bord);border-radius:50px;padding:14px 26px;font-family:'Fredoka One',cursive;font-size:1.05rem;cursor:pointer;margin-right:10px;margin-top:10px;}
+.st-avatar{flex:0 0 auto;display:block;}
+
+.st-chip:focus-visible,.st-sw:focus-visible,#st-perso-btn:focus-visible,.modecard.st-mode:focus-visible{outline:3px solid var(--acc);outline-offset:3px;}
+
+@media(max-width:480px){
+  .modecard.st-mode{flex-direction:column;text-align:center;gap:6px;}
+  .st-setup-grid{flex-direction:column;text-align:center;}
+  .st-fields .st-chips{justify-content:center;}
+  #st-banner{flex-wrap:wrap;}
+  .st-gauge{flex:1 1 100%;}
+  .st-card{padding:18px 16px;}
+}
+@media(prefers-reduced-motion:reduce){#st-setup,#st-scene{animation:none;}.st-gauge-fill{transition:none;}}

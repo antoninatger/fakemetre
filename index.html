@@ -12,6 +12,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="fakemetre.css">
+<link rel="stylesheet" href="histoire.css">
 </head>
 <body>
 
@@ -407,7 +408,13 @@
     <div class="stag" data-i18n="stag">Affirmation mystère</div>
     <div class="stxt" id="stxt"></div>
   </div>
-  <div class="mwrap">
+  <!-- Le déroulé par étapes (1er octobre 2026) : l'affirmation, puis le curseur, puis les
+       sources, puis le vote. Chaque étape n'apparaît que lorsque la précédente est faite. -->
+  <div class="etape-suite" id="etape-lu">
+    <button class="etape-btn" onclick="etapeCurseur()" data-i18n="stepReadBtn">J'ai lu l'affirmation →</button>
+  </div>
+  <div class="mwrap" id="etape-curseur">
+    <div class="etape-consigne" data-i18n="stepMeterTitle">🎚️ Évalue cette affirmation avec le curseur : à quel point la crois-tu vraie ?</div>
     <div class="mlabels"><span data-i18n="meterFalse">❌ Faux</span><span id="mstatus">🤔 Incertain...</span><span data-i18n="meterTrue">Vrai ✅</span></div>
     <div class="mbg" id="mbg" role="slider" tabindex="0"
          aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"
@@ -417,9 +424,14 @@
     </div>
     <div class="meter-hint" data-i18n="meterHint">👆 Glisse le curseur pour indiquer ce que tu penses !</div>
   </div>
-  <div class="sectitle" data-i18n="sectitle">📂 Consulte des sources pour te faire une idée</div>
-  <div id="counter"></div>
-  <div id="sgrid"></div>
+  <div class="etape-suite" id="etape-reveler">
+    <button class="etape-btn" onclick="etapeSources()" data-i18n="stepRevealBtn">📂 Révéler les sources</button>
+  </div>
+  <div id="etape-sources">
+    <div class="sectitle" data-i18n="sectitle">📂 Consulte des sources pour te faire une idée</div>
+    <div id="counter"></div>
+    <div id="sgrid"></div>
+  </div>
   <div id="vzone">
     <p data-i18n="vzoneQuestion">🧑‍⚖️ Après ton enquête, qu'est-ce que tu en penses ?</p>
     <div class="vhint" data-i18n="vhint">Tu peux encore consulter d'autres sources, ou voter maintenant !</div>
@@ -432,7 +444,7 @@
 </div>
 
 <div id="final"></div>
-<div class="overlay" id="ov" onclick="hide('msrc')"></div>
+<div class="overlay" id="ov" onclick="if($('mrech').classList.contains('show'))fermerRecherche();else hide('msrc')"></div>
 
 <div class="modal" id="msrc">
   <div class="msname" id="msname"></div>
@@ -473,28 +485,22 @@
   <div class="fbtitle" id="fbtitle"></div>
   <div class="fbexpl"  id="fbexpl"></div>
   <div class="ptswrap"><span class="fbpts" id="fbpts"></span></div>
+  <!-- 1er octobre 2026 : plus de « Oui / Non » avant d'ajuster. Le petit curseur est là,
+       à la position actuelle : on le bouge si on veut, puis on continue. -->
   <div id="cursor-prompt" style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.08);">
-    <p style="font-weight:800;font-size:1.05rem;text-align:center;margin-bottom:10px;color:var(--acc);" data-i18n="cursorPromptQ">🎚️ Souhaites-tu modifier le curseur après avoir lu cette source ?</p>
-    <div style="display:flex;gap:8px;">
-      <button class="tbtn" style="font-size:.85rem;padding:9px 8px;background:var(--card);border:2px solid var(--bord);color:var(--tx);" onclick="hide('mfb')" data-i18n="cursorPromptNo">Non, continuer →</button>
-      <button class="tbtn" style="font-size:.85rem;padding:9px 8px;background:var(--card);border:2px solid var(--bord);color:var(--tx);" onclick="openMeterAdjust()" data-i18n="cursorPromptYes">Oui, ajuster !</button>
+    <p style="font-weight:800;font-size:1.05rem;text-align:center;margin-bottom:10px;color:var(--acc);" data-i18n="cursorPromptQ">🎚️ Veux-tu modifier ton curseur après avoir lu cette source ?</p>
+    <div class="mwrap" style="margin-bottom:12px;">
+      <div class="mlabels"><span data-i18n="meterFalse">❌ Faux</span><span id="mini-mstatus">🤔 Incertain...</span><span data-i18n="meterTrue">Vrai ✅</span></div>
+      <div class="mbg" id="mini-mbg" role="slider" tabindex="0"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"
+           data-i18n-aria-label="meterAriaAdjust">
+        <div class="mfill" id="mini-mfill"></div>
+        <div class="mcursor" id="mini-mcursor"></div>
+      </div>
+      <div class="meter-hint" data-i18n="meterAdjustHint">👆 Glisse pour ajuster, ou laisse-le où il est.</div>
     </div>
+    <button class="mclose" onclick="confirmMeterAdjust()" data-i18n="cursorPromptNo">Continuer →</button>
   </div>
-</div>
-
-<div class="modal" id="mfb-meter" style="z-index:100;">
-  <p style="font-weight:800;font-size:.95rem;text-align:center;margin-bottom:12px;color:var(--acc);" data-i18n="meterAdjustTitle">🎚️ Ajuste ton curseur</p>
-  <div class="mwrap" style="margin-bottom:12px;">
-    <div class="mlabels"><span data-i18n="meterFalse">❌ Faux</span><span id="mini-mstatus">🤔 Incertain...</span><span data-i18n="meterTrue">Vrai ✅</span></div>
-    <div class="mbg" id="mini-mbg" role="slider" tabindex="0"
-         aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"
-         data-i18n-aria-label="meterAriaAdjust">
-      <div class="mfill" id="mini-mfill"></div>
-      <div class="mcursor" id="mini-mcursor"></div>
-    </div>
-    <div class="meter-hint" data-i18n="meterAdjustHint">👆 Glisse pour ajuster !</div>
-  </div>
-  <button class="mclose" onclick="confirmMeterAdjust()" data-i18n="meterAdjustConfirm">✅ Valider ma position</button>
 </div>
 
 <div class="modal" id="mvr">
@@ -525,6 +531,11 @@
   <button class="mclose" onclick="hide('mexpert')" id="expid-close">Fermer</button>
 </div>
 
+<!-- Faux moteur de recherche « Fouineur » : enquête sur une personne (enquete.js) -->
+<div class="modal rech" id="mrech" role="dialog" aria-modal="true" aria-label="Recherche">
+  <div id="rech-corps"></div>
+</div>
+
 <footer style="text-align:center;padding:20px 0 10px;opacity:.5;font-size:.75rem;font-weight:600;color:var(--mu);">
   © 2026 Antonin Atger &nbsp;|&nbsp; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" style="color:var(--mu);">CC BY-NC 4.0</a>
 </footer>
@@ -533,6 +544,8 @@
 <script src="creator_template.js"></script>
 <script src="questions_fr.js"></script>
 <script src="questions_en.js"></script>
+<script src="personnes_pro.js"></script>
+<script src="enquete.js"></script>
 <script src="fakemetre-cards.js"></script><script>
 
 // ═══════════════════════════════════════════════
@@ -644,9 +657,12 @@ const I18N = {
     ratherFalse: '⬅️ Plutôt FAUX',
     ratherTrue: 'Plutôt VRAI ➡️',
     unsure: '🤔 Incertain...',
-    counterNone: 'Consulte au moins 1 source avant de voter ({total} disponibles)',
-    counterSome: '✅ Tu peux voter ou consulter encore {n} source{s} !',
-    counterAll: '✅ Tu as évalué toutes les sources. À toi de décider !',
+    counterNone: 'Ouvre les {total} sources une par une : tu pourras décider quand tu les auras toutes lues.',
+    counterSome: '🔍 Encore {n} source{s} à ouvrir avant de décider.',
+    counterAll: '✅ Tu as lu toutes les sources. À toi de décider !',
+    stepReadBtn: 'J\'ai lu l\'affirmation →',
+    stepMeterTitle: '🎚️ Évalue cette affirmation avec le curseur : à quel point la crois-tu vraie ?',
+    stepRevealBtn: '📂 Révéler les sources',
     levelJuniorMode: '🔎 Apprenti Détective — Choisis ton mode',
     levelInterMode: '🕵️ Enquêteur Junior — Choisis ton mode',
     levelProMode: '⚡ Fact-Checker Confirmé — Choisis ton mode',
@@ -759,7 +775,7 @@ const I18N = {
     meterAria: 'Ton niveau de croyance, de « faux » à « vrai »',
     sectitle: '📂 Consulte des sources pour te faire une idée',
     vzoneQuestion: '🧑‍⚖️ Après ton enquête, qu\'est-ce que tu en penses ?',
-    vhint: 'Tu peux encore consulter d\'autres sources, ou voter maintenant !',
+    vhint: 'Tu as ouvert toutes les sources : c\'est l\'heure de ta décision finale.',
     btnVoteFalse: '❌ C\'est FAUX',
     btnVoteConsensus: '⚖️ Pas de consensus clair',
     btnVoteTrue: '✅ C\'est VRAI',
@@ -773,11 +789,11 @@ const I18N = {
     likertConfirmBtn: 'Valider mon évaluation →',
     researchBtn: '🔍 Je veux aller plus loin pour évaluer cette source',
     btnRevealSay: '👁️ Voir ce que dit cette source',
-    cursorPromptQ: '🎚️ Souhaites-tu modifier le curseur après avoir lu cette source ?',
-    cursorPromptNo: 'Non, continuer →',
+    cursorPromptQ: '🎚️ Veux-tu modifier ton curseur après avoir lu cette source ?',
+    cursorPromptNo: 'Continuer →',
     cursorPromptYes: 'Oui, ajuster !',
     meterAdjustTitle: '🎚️ Ajuste ton curseur',
-    meterAdjustHint: '👆 Glisse — ou flèches du clavier — pour ajuster !',
+    meterAdjustHint: '👆 Glisse pour ajuster, ou laisse-le où il est.',
     meterAriaAdjust: 'Ajuster ton niveau de croyance, de « faux » à « vrai »',
     meterAdjustConfirm: '✅ Valider ma position',
     btnContinue: 'Continuer →',
@@ -815,7 +831,7 @@ const I18N = {
     // ── Jeu : feedback source (confirmLikert) ──
     fbLikertEditTitle: 'Note modifiée !',
     fbLikertNewTitle: 'Source évaluée !',
-    fbLikertExpl: 'Tu as noté cette source {score}/7. Tu peux consulter d\'autres sources ou voter directement.',
+    fbLikertExpl: 'Tu as noté cette source {score}/7.',
     // ── Jeu : feedback source (trust) ──
     trustTitleGoodTrust: 'Excellent choix !',
     trustTitleGoodDistrust: 'Dommage...',
@@ -1028,9 +1044,12 @@ const I18N = {
     ratherFalse: '⬅️ Rather FALSE',
     ratherTrue: 'Rather TRUE ➡️',
     unsure: '🤔 Unsure...',
-    counterNone: 'Check at least 1 source before voting ({total} available)',
-    counterSome: '✅ You can vote or check {n} more source{s}!',
-    counterAll: '✅ You have evaluated all sources. Time to decide!',
+    counterNone: 'Open the {total} sources one by one: you can decide once you have read them all.',
+    counterSome: '🔍 {n} more source{s} to open before deciding.',
+    counterAll: '✅ You have read all the sources. Time to decide!',
+    stepReadBtn: 'I have read the claim →',
+    stepMeterTitle: '🎚️ Rate this claim with the slider: how true do you think it is?',
+    stepRevealBtn: '📂 Reveal the sources',
     levelJuniorMode: '🔎 Apprentice Detective — Choose your mode',
     levelInterMode: '🕵️ Junior Investigator — Choose your mode',
     levelProMode: '⚡ Advanced Fact-Checker — Choose your mode',
@@ -1143,7 +1162,7 @@ const I18N = {
     meterAria: 'Your level of belief, from “false” to “true”',
     sectitle: '📂 Check sources to make up your mind',
     vzoneQuestion: '🧑‍⚖️ After your investigation, what do you think?',
-    vhint: 'You can still check other sources, or vote now!',
+    vhint: 'You have opened every source: time for your final decision.',
     btnVoteFalse: '❌ It\'s FALSE',
     btnVoteConsensus: '⚖️ No clear consensus',
     btnVoteTrue: '✅ It\'s TRUE',
@@ -1157,11 +1176,11 @@ const I18N = {
     likertConfirmBtn: 'Submit my evaluation →',
     researchBtn: '🔍 I want to dig deeper to evaluate this source',
     btnRevealSay: '👁️ See what this source says',
-    cursorPromptQ: '🎚️ Do you want to change the slider after reading this source?',
-    cursorPromptNo: 'No, continue →',
+    cursorPromptQ: '🎚️ Do you want to change your slider after reading this source?',
+    cursorPromptNo: 'Continue →',
     cursorPromptYes: 'Yes, adjust!',
     meterAdjustTitle: '🎚️ Adjust your slider',
-    meterAdjustHint: '👆 Drag — or use the arrow keys — to adjust!',
+    meterAdjustHint: '👆 Drag to adjust, or leave it where it is.',
     meterAriaAdjust: 'Adjust your level of belief, from “false” to “true”',
     meterAdjustConfirm: '✅ Confirm my position',
     btnContinue: 'Continue →',
@@ -1199,7 +1218,7 @@ const I18N = {
     // ── Game : source feedback (confirmLikert) ──
     fbLikertEditTitle: 'Rating updated!',
     fbLikertNewTitle: 'Source evaluated!',
-    fbLikertExpl: 'You rated this source {score}/7. You can check more sources or vote now.',
+    fbLikertExpl: 'You rated this source {score}/7.',
     // ── Game : source feedback (trust) ──
     trustTitleGoodTrust: 'Great choice!',
     trustTitleGoodDistrust: 'Too bad...',
@@ -1377,7 +1396,7 @@ function show(id){
 
 function hide(id){
   $(id).classList.remove('show');
-  const stillOpen=['msrc','mfb','mvr','mfb-meter','mhint-cursor','mexpert'].some(m=>$(m).classList.contains('show'));
+  const stillOpen=['msrc','mfb','mvr','mhint-cursor','mexpert','mrech'].some(m=>$(m)&&$(m).classList.contains('show'));
   if(!stillOpen){
     $('ov').classList.remove('show');
     // Rend le focus à l'élément déclencheur une fois toutes les modales fermées
@@ -1391,7 +1410,7 @@ document.addEventListener('keydown',function(e){
   if(e.key!=='Escape')return;
   // Modales jeu (.modal)
   if($('mexpert').classList.contains('show')){hide('mexpert');return;}
-  if($('mfb-meter').classList.contains('show')){hide('mfb-meter');show('mfb');return;}
+  if($('mrech')&&$('mrech').classList.contains('show')){fermerRecherche();return;}
   if($('msrc').classList.contains('show')){hide('msrc');return;}
   if($('mhint-cursor').classList.contains('show')){closeCursorHint();return;}
   // Modales créateur/communauté (.modal-overlay)
@@ -1551,18 +1570,55 @@ function createSliderDrag(bgId,onChange,lire){
 }
 function initMeterDrag(){createSliderDrag('mbg',pos=>{meter=pos;updMeter();},()=>meter);}
 
-function openMeterAdjust(){
-  hide('mfb');
+// Le petit curseur vit DANS la fenêtre de retour d'une source (1er octobre 2026) : il
+// s'affiche à la position actuelle, le joueur le bouge s'il veut, puis « Continuer ».
+function preparerMiniCurseur(){
   tempMeter=meter;
   updMiniMeter(tempMeter);
-  show('mfb-meter');
   initMiniMeterDrag();
 }
 
 function confirmMeterAdjust(){
   meter=tempMeter;
   updMeter();
-  hide('mfb-meter');
+  hide('mfb');
+  majZoneVote();
+}
+
+// ── Les étapes d'une enquête ──
+// 1. l'affirmation seule ; 2. le curseur ; 3. les sources ; 4. le vote, une fois TOUTES
+// les sources ouvertes et évaluées.
+function etapeAffirmation(){
+  $('etape-lu').style.display='';
+  $('etape-curseur').style.display='none';
+  $('etape-reveler').style.display='none';
+  $('etape-sources').style.display='none';
+  $('vzone').style.display='none';
+}
+function etapeCurseur(){
+  $('etape-lu').style.display='none';
+  $('etape-curseur').style.display='';
+  $('etape-curseur').classList.remove('etape-arrive');void $('etape-curseur').offsetWidth;$('etape-curseur').classList.add('etape-arrive');
+  $('etape-reveler').style.display='';
+  const b=$('mbg');if(b)setTimeout(()=>b.focus(),60);
+}
+function etapeSources(){
+  $('etape-reveler').style.display='none';
+  $('etape-sources').style.display='';
+  $('etape-sources').classList.remove('etape-arrive');void $('etape-sources').offsetWidth;$('etape-sources').classList.add('etape-arrive');
+  // La croyance de départ est celle d'avant toute lecture : on la fige ici.
+  if(meterStart===null) meterStart=meter;
+  $('etape-sources').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+// Le vote n'apparaît que quand toutes les sources ont été évaluées, et que le joueur a
+// refermé la dernière fenêtre (curseur compris).
+function majZoneVote(){
+  const toutes=sh.length>0&&uc>=sh.length;
+  const ouverte=['msrc','mfb'].some(m=>$(m).classList.contains('show'));
+  if(toutes&&!ouverte&&$('vzone').style.display!=='block'){
+    $('vzone').style.display='block';
+    setTimeout(()=>$('vzone').scrollIntoView({behavior:'smooth',block:'nearest'}),50);
+  }
 }
 
 function updMiniMeter(p){
@@ -1623,10 +1679,9 @@ function renderQ(){
   if(btnConsensus){
     btnConsensus.style.display = (currentLevel==='pro') ? 'block' : 'none';
   }
-  // Montrer le tutoriel curseur seulement si pas encore vu ET première question de la partie
-  if((currentLevel==='pro'||currentLevel==='inter')&&qi===0&&!cursorTutorialSeen){
-    setTimeout(()=>show('mhint-cursor'),200);
-  }
+  // Le tutoriel du curseur (mhint-cursor) n'est plus montré : l'étape 2 du déroulé
+  // (« Évalue cette affirmation avec le curseur ») dit la même chose, à sa place.
+  etapeAffirmation();
   const g=$('sgrid');g.innerHTML='';
   sh.forEach((src,i)=>{
     const b=document.createElement('button');
@@ -1676,7 +1731,8 @@ function openSrc(src,idx,btn){
         badgeEl.textContent=`${med.ic} ${med.lab}`;
         nameEl.insertAdjacentElement('afterend',badgeEl);
       }
-      if(src.d){
+      // Personne masquée : sa description dirait son métier.
+      if(src.d&&!isHiddenExpert(src)){
         let descEl=btn.querySelector('.sdesc');
         if(!descEl){descEl=document.createElement('div');descEl.className='sdesc';nameEl.parentNode.appendChild(descEl);}
         descEl.textContent=src.d;
@@ -1685,9 +1741,16 @@ function openSrc(src,idx,btn){
   }
   $('msname').textContent=expertDisplayEmoji(src)+'  '+expertDisplayName(src);
   const med=srcMedium(src);
-  $('msdesc').innerHTML=`<span class="medium-badge ${med.cls}">${med.ic} ${med.lab}</span>${escH(src.d||'')}`;
+  const masquee=isHiddenExpert(src);
+  $('msdesc').innerHTML=`<span class="medium-badge ${med.cls}">${med.ic} ${med.lab}</span>${masquee?'':escH(src.d||'')}`;
   const sayEl=$('mssays');
-  if(src.img && src.imgUser){
+  if(masquee){
+    // Niveau Fact-Checker : une personne n'est qu'un nom, une citation et une loupe,
+    // quel que soit le support (post, vidéo, interview…) : enquete.js.
+    sayEl.className='';
+    sayEl.style.cssText='margin-bottom:16px;';
+    sayEl.innerHTML=buildPersonneMasquee(src);
+  } else if(src.img && src.imgUser){
     sayEl.className='';
     sayEl.style.cssText='margin-bottom:16px;';
     sayEl.innerHTML=buildInstaPost(src);
@@ -1832,7 +1895,7 @@ function confirmLikert(){
   // Swap atomique : montrer mfb avant de cacher msrc pour éviter le gap sans overlay
   show('mfb');
   setTimeout(()=>$('msrc').classList.remove('show'),50);
-  setTimeout(()=>{$('vzone').style.display='block';},600);
+  preparerMiniCurseur();
 }
 
 // Fiche identité d'un expert masqué (niveau difficile) — ouverte via la loupe
@@ -1854,6 +1917,8 @@ function searchSource(){
   // Ouvrir une recherche Google sur la source actuelle
   if(!pend) return;
   const src = pend.src;
+  // Personne masquée : la loupe et ce bouton mènent au même faux moteur de recherche.
+  if(isHiddenExpert(src)){ ouvrirRecherche(src); return; }
   
   // Si la source a une URL directe, l'ouvrir
   if(src.url) {
@@ -1909,7 +1974,7 @@ function trust(trusts){
   // Swap atomique : montrer mfb avant de cacher msrc pour éviter le gap sans overlay
   show('mfb');
   setTimeout(()=>$('msrc').classList.remove('show'),50);
-  setTimeout(()=>{$('vzone').style.display='block';},600);
+  preparerMiniCurseur();
 }
 
 // En deçà de ce déplacement, on considère que le curseur n'a pas bougé : un
@@ -2001,10 +2066,10 @@ function recapSources(){
     else if(j.mefiance)  texte=j.fiable?fb.dg:fb.db;
     else texte=sansInterjection(j.fiable?fb.dg:fb.tb);
     const p=j.vue?ptsSource(src,j.confiance,j.mefiance):0;
-    const cache=(typeof isHiddenExpert==='function')&&isHiddenExpert(src)&&src.expertTitle;
+    const cache=(typeof isHiddenExpert==='function')&&isHiddenExpert(src)&&(src.expertTitle||src.n);
     const meta=(libre?'':(j.fiable?t('vrSrcReliable'):t('vrSrcUnreliable'))+' · ')+j.libelle;
     return `<div class="vrsrc ${cls}">
-      <div class="vrsrc-h"><span class="vrsrc-mark">${marque}</span><span class="vrsrc-name">${escH(expertDisplayName(src))}${cache?` <span class="vrsrc-real">— ${escH(src.expertTitle)}</span>`:''}</span>${p?`<span class="vrsrc-pts ${p>0?'pos':'neg'}">${p>0?'+':''}${p}</span>`:''}</div>
+      <div class="vrsrc-h"><span class="vrsrc-mark">${marque}</span><span class="vrsrc-name">${escH(expertDisplayName(src))}${cache?` <span class="vrsrc-real">– ${escH(cache)}</span>`:''}</span>${p?`<span class="vrsrc-pts ${p>0?'pos':'neg'}">${p>0?'+':''}${p}</span>`:''}</div>
       <div class="vrsrc-meta">${meta}</div>
       <div class="vrsrc-fb">${escH(texte)}</div>
     </div>`;
@@ -4120,6 +4185,10 @@ try{
   }
 }catch(e){}
 </script>
+<script src="histoire.js"></script>
+<!-- Le vote du public par téléphone (24 octobre) : la case « Le public vote par téléphone » et le QR code. -->
+<script src="vote-qrcode.js"></script>
+<script src="vote-telephone.js"></script>
 <button class="fs-btn" id="fs-btn" onclick="toggleFS()" data-i18n="btnFullscreen">⛶ Plein écran</button>
 
 <!-- WALKTHROUGH "COMMENT ÇA MARCHE" -->

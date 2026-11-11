@@ -1,5 +1,18 @@
 # Nouveautés FakeMètre
 
+## Mise à jour, 11 novembre 2026 (fin du « deux sources fiables sur quatre »)
+
+Jusqu'ici, 24 affirmations sur 24 en Apprenti et 43 sur 44 en Enquêteur avaient exactement deux sources fiables et deux non fiables : un élève pouvait déduire les dernières sources sans les lire. **Vingt affirmations changent de composition**, en français et en anglais, par le remplacement d'une source :
+
+- **Trois sources fiables** (une source faible remplacée par une source solide) : papillons (Muséum), méduse (Aquarium de La Rochelle), chèvres (éleveuse, témoin direct d'un fait observable), Vénus (Observatoire de Paris), « robot » (Théâtre national de Prague), Alaska (atlas), cascade sous-marine (manuel d'océanographie), fuseaux horaires (encyclopédie), lac Vostok (Institut polaire), Chimborazo (institut de géographie).
+- **Une seule source fiable** (une source solide remplacée par une source trompeuse) : mémoire des poissons (dessin animé), dauphins (poissonnier), chewing-gum (grand-mère), 10 % du cerveau (publicité), tournesols (sachet de graines), chauves-souris (carte de quiz), Vikings (boutique de déguisements), Terre plate (manuel de 1890), alcool (carte postale du saint-bernard), « descend du singe » (illustration « La marche du progrès »).
+
+Répartition après coup : Apprenti 17 × 2/4, 4 × 1/4, 3 × 3/4 ; Enquêteur 30 × 2/4, 7 × 1/4, 7 × 3/4. Le score maximal suit tout seul (`maxPtsQuestion()` compte la composition réelle). Les nouvelles sources respectent la règle du 10 novembre : leur nom et leur description disent ce qu'elles sont, jamais ce qu'elles valent.
+
+Au passage, une source de la version anglaise restée en français (« Dicton populaire de montagne ») est traduite.
+
+---
+
 ## Mise à jour, 11 novembre 2026 (fin de partie, mémoire, son et voix)
 
 ### 🗂️ Une fin de partie qui apprend

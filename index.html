@@ -1463,7 +1463,7 @@ function show(id){
   if(active&&!active.closest('.modal,.modal-overlay')){_lastFocused=active;}
   // Déplace le focus sur le premier bouton de la modale (après l'animation)
   const modal=$(id);
-  if(modal){const f=modal.querySelector('button:not([disabled]),[tabindex="0"]');if(f)setTimeout(()=>f.focus(),60);}
+  if(modal){const f=modal.querySelector('button:not([disabled]):not(.ecouter-btn),[tabindex="0"]');if(f)setTimeout(()=>f.focus(),60);}
 }
 
 function hide(id){

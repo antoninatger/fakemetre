@@ -743,3 +743,73 @@ button:focus-visible,a:focus-visible,[tabindex]:focus-visible,
 
 /* Cartes de niveau et de mode atteignables au clavier */
 .levelcard:focus-visible,.modecard:focus-visible{outline:3px solid var(--acc);outline-offset:3px;}
+
+/* ═══ 11 novembre 2026 : progression, série, fin de partie, en-tête compact ═══ */
+/* Progression par niveau, sur les cartes de l'accueil */
+.lc-prog{margin-top:10px;}
+.lc-prog-bar{height:6px;border-radius:6px;background:rgba(255,255,255,.1);overflow:hidden;}
+.lc-prog-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--acc),#3ecf8e);}
+.lc-prog-txt{font-size:.74rem;font-weight:800;color:var(--mu);margin-top:5px;}
+
+/* Série de bons verdicts, dans la barre de score */
+.serie{background:rgba(247,165,72,.16);border:1px solid rgba(247,165,72,.5);color:#f7a548;border-radius:50px;padding:3px 10px;font-size:.8rem;font-weight:800;white-space:nowrap;}
+.serie-pop{animation:seriePop .45s ease-out;}
+@keyframes seriePop{0%{transform:scale(.6);}60%{transform:scale(1.18);}100%{transform:scale(1);}}
+@media(prefers-reduced-motion:reduce){.serie-pop{animation:none;}}
+
+/* Fin de partie : boutons sous le score */
+.fbtns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:6px 0 22px;}
+.fbtns #rbtn{margin-right:0;}
+.fbtns button{min-height:48px;}
+#ebtn{background:var(--panel);color:#f7a548;border:2px solid #f7a548;border-radius:50px;padding:14px 26px;font-family:'Fredoka One',cursive;font-size:1.05rem;cursor:pointer;transition:transform .2s;}
+#ebtn:hover{transform:scale(1.05);}
+#ebtn:focus-visible,#rbtn:focus-visible,#mbtn:focus-visible{outline:3px solid var(--acc);outline-offset:3px;}
+@media(max-width:480px){.fbtns button{width:100%;}}
+
+/* Récapitulatif des affirmations */
+.recap-partie{background:var(--panel);border-radius:16px;padding:20px 22px;text-align:left;border:1px solid var(--bord);margin-bottom:20px;}
+.recap-partie h3{font-family:'Fredoka One',cursive;color:var(--acc);margin-bottom:4px;}
+.recap-hint{color:var(--mu);font-size:.78rem;font-weight:600;margin-bottom:12px;}
+.recap-q{border-left:4px solid var(--bord);background:rgba(255,255,255,.03);border-radius:10px;margin-bottom:8px;}
+.recap-q.ok{border-left-color:#3ecf8e;}
+.recap-q.ko{border-left-color:#f75f5f;}
+.recap-q summary{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;cursor:pointer;font-weight:700;font-size:.9rem;line-height:1.4;list-style:none;min-height:44px;}
+.recap-q summary::-webkit-details-marker{display:none;}
+.recap-q summary::after{content:'▾';margin-left:auto;color:var(--mu);transition:transform .2s;}
+.recap-q[open] summary::after{transform:rotate(180deg);}
+.recap-q summary:focus-visible{outline:3px solid var(--acc);outline-offset:2px;border-radius:10px;}
+.recap-mark{font-weight:900;flex:none;}
+.recap-q.ok .recap-mark{color:#3ecf8e;}
+.recap-q.ko .recap-mark{color:#f75f5f;}
+.recap-votes{display:flex;flex-wrap:wrap;gap:4px 18px;padding:0 14px 8px 38px;font-size:.8rem;color:var(--mu);font-weight:700;}
+.recap-votes b{color:var(--tx);}
+.recap-e{padding:0 14px 14px 38px;font-size:.86rem;line-height:1.55;color:var(--tx);opacity:.92;}
+
+/* Les bons réflexes : repliés, la partie du joueur passe d'abord */
+details.ftips summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:44px;}
+details.ftips summary::-webkit-details-marker{display:none;}
+details.ftips summary::after{content:'▾';color:var(--mu);}
+details.ftips[open] summary::after{transform:rotate(180deg);}
+details.ftips summary h3{margin-bottom:0;}
+details.ftips[open] summary{margin-bottom:12px;}
+details.ftips summary:focus-visible{outline:3px solid var(--acc);outline-offset:4px;border-radius:8px;}
+
+/* En-tête compact pendant la partie */
+body.en-partie header{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;margin-bottom:10px;}
+body.en-partie header .sub,body.en-partie header .author,body.en-partie header p{display:none;}
+body.en-partie header h1{font-size:1.3rem;text-shadow:none;}
+body.en-partie header .brand-gauge{width:32px;height:21px;margin:0;}
+
+/* Son et voix */
+.son-btn{background:transparent;border:1px solid var(--bord);color:var(--tx);border-radius:50%;width:44px;height:44px;font-size:1.05rem;cursor:pointer;flex:none;margin-left:auto;}
+.son-btn:focus-visible,.ecouter-btn:focus-visible{outline:3px solid var(--acc);outline-offset:2px;}
+.ecouter-btn{background:rgba(79,163,247,.12);border:1px solid rgba(79,163,247,.4);color:#8cc4ff;border-radius:50px;padding:8px 14px;min-height:40px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.8rem;cursor:pointer;margin-top:12px;}
+.ecouter-btn.parle{background:rgba(79,163,247,.3);color:#fff;}
+#msrc .ecouter-btn{margin:0 0 12px;}
+@media(max-width:600px){
+  /* Le bouton « Plein écran » occupe le coin : la jauge du logo n'a plus sa place. */
+  body.en-partie header .brand-gauge{display:none;}
+  #scorebar{flex-wrap:wrap;justify-content:center;gap:4px 8px;padding:6px 10px;border-radius:24px;font-size:.82rem;max-width:100%;box-sizing:border-box;}
+  #scorebar .back-btn{margin-right:2px !important;padding:8px 12px;}
+  .son-btn{margin-left:0;}
+}

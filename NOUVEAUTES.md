@@ -1,5 +1,25 @@
 # Nouveautés FakeMètre
 
+## Mise à jour, 11 novembre 2026 (le mode histoire s'étend)
+
+### 📖 Enquêteur Junior : « La Cellule Vérif »
+
+Un second récit, pour le niveau Enquêteur Junior. Le joueur fait son stage d'observation au *Courrier du Fleuve*, un quotidien régional, à la rubrique de vérification. Chaque jour, une affirmation arrive de chez les lecteurs (courriel, appel au standard, lettre, vidéo en tendance, magazine, remarque en conférence de rédaction). Il enquête, puis **tamponne VRAI ou FAUX**.
+
+- Jauge « crédibilité de la rubrique » : +10 par bon tampon, −15 pour une fausse info validée, −10 pour une vraie info démentie.
+- Trois fins : sa signature dans le journal (80 % et plus), stage validé (45 à 79 %), rubrique suspendue.
+- Personnages : Nadia, cheffe de la rubrique, et Hugo, journaliste web. Journal et personnages sont fictifs.
+
+### 🇬🇧 Les deux récits existent en anglais
+
+« The Schoolyard Gazette » (Apprentice Detective) et « The Fact-Check Desk » (Junior Investigator). En anglais, le récit parle au joueur à la deuxième personne : pas de choix « elle / il ».
+
+> `histoire.js` est réorganisé : les textes de chaque récit sont regroupés dans un objet (`GAZETTE_FR`, `GAZETTE_EN`, `VERIF_FR`, `VERIF_EN`), le moteur est commun. Ajouter un récit revient à écrire un cinquième objet et à l'inscrire dans `RECITS`. Le niveau Fact-Checker n'a pas de récit.
+
+Au passage : le bouton « Plein écran » restait en français dans la version anglaise ; sur téléphone, « Enquête 2 / 5 » ne se coupe plus en deux lignes.
+
+---
+
 ## Mise à jour, 11 novembre 2026 (fin du « deux sources fiables sur quatre »)
 
 Jusqu'ici, 24 affirmations sur 24 en Apprenti et 43 sur 44 en Enquêteur avaient exactement deux sources fiables et deux non fiables : un élève pouvait déduire les dernières sources sans les lire. **Vingt affirmations changent de composition**, en français et en anglais, par le remplacement d'une source :

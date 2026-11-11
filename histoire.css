@@ -99,3 +99,8 @@
   .st-card{padding:18px 16px;}
 }
 @media(prefers-reduced-motion:reduce){#st-setup,#st-scene{animation:none;}.st-gauge-fill{transition:none;}}
+
+/* Le champ du prénom portait une classe sans règle : il s'affichait en champ blanc par
+   défaut du navigateur. 16 px au moins, sinon iOS zoome à la saisie. */
+#st-prenom{width:100%;max-width:280px;background:var(--card);border:2px solid var(--bord);border-radius:10px;padding:12px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;color:var(--tx);text-align:center;box-sizing:border-box;}
+#st-prenom:focus{outline:none;border-color:var(--acc);}

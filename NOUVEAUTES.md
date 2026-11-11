@@ -1,5 +1,17 @@
 # Nouveautés FakeMètre
 
+## Mise à jour, 11 novembre 2026 (sept défauts corrigés)
+
+- **Bilan du niveau Apprenti** : il annonçait « tu t'es méfié(e) de sources pourtant fiables » à chaque partie, en listant les sources fiables même quand le joueur leur avait fait confiance (`null <= 3` est vrai en JavaScript). Corrigé dans `generateBilan()`.
+- **Clavier** : les cartes de niveau et de mode se choisissent maintenant à la touche Tab puis Entrée ; avant, on ne pouvait pas lancer une partie sans souris.
+- **Téléphone** : les boutons « Plein écran » et langue ne flottent plus par-dessus le jeu (ils masquaient « VRAI », les boutons de confiance et le vote) ; ils restent en haut de page.
+- **Version anglaise** : les sources fermées affichaient « clique pour faire apparaître » en français.
+- **Mode 10 questions** : « Mode complet, toutes les énigmes » devient « Enquête longue, 10 questions tirées au sort » (le niveau en compte 24 à 72).
+- **Guide de première visite** : il ne s'ouvre plus par-dessus une partie si le joueur a déjà choisi un niveau dans la demi-seconde.
+- **Mode histoire** : le champ du prénom a enfin son style (il s'affichait en petit champ blanc).
+
+---
+
 ## Mise à jour, 1er octobre 2026 (une enquête en étapes, et des personnes à vérifier)
 
 ### 🪜 Tous niveaux : l'enquête se déroule étape par étape

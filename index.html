@@ -86,7 +86,7 @@
     <div class="modecard" onclick="startGame(10)">
       <span class="mc-icon">🔎</span>
       <div class="mc-title">10 Questions</div>
-      <div class="mc-desc" data-i18n-html="mode10Desc">Mode complet<br>Toutes les énigmes</div>
+      <div class="mc-desc" data-i18n-html="mode10Desc">Enquête longue<br>10 questions tirées au sort</div>
     </div>
   </div>
 </div>
@@ -583,7 +583,7 @@ const I18N = {
     modeScreenTitle: 'Choisis ton mode d\'enquête',
     modeScreenSub: 'Combien de questions veux-tu explorer ?',
     mode5Desc: 'Mode rapide<br>5 questions tirées au sort',
-    mode10Desc: 'Mode complet<br>Toutes les énigmes',
+    mode10Desc: 'Enquête longue<br>10 questions tirées au sort',
     // Creator
     backToMenu: '← Retour au menu',
     creatorH2: '✏️ Mode Créateur',
@@ -657,6 +657,8 @@ const I18N = {
     ratherFalse: '⬅️ Plutôt FAUX',
     ratherTrue: 'Plutôt VRAI ➡️',
     unsure: '🤔 Incertain...',
+    srcSlotName: 'Source {n}',
+    srcSlotHint: 'clique pour faire apparaître',
     counterNone: 'Ouvre les {total} sources une par une : tu pourras décider quand tu les auras toutes lues.',
     counterSome: '🔍 Encore {n} source{s} à ouvrir avant de décider.',
     counterAll: '✅ Tu as lu toutes les sources. À toi de décider !',
@@ -970,7 +972,7 @@ const I18N = {
     modeScreenTitle: 'Choose your investigation mode',
     modeScreenSub: 'How many questions do you want to explore?',
     mode5Desc: 'Quick mode<br>5 randomly selected questions',
-    mode10Desc: 'Full mode<br>All riddles',
+    mode10Desc: 'Long investigation<br>10 randomly selected questions',
     // Creator
     backToMenu: '← Back to menu',
     creatorH2: '✏️ Creator Mode',
@@ -1044,6 +1046,8 @@ const I18N = {
     ratherFalse: '⬅️ Rather FALSE',
     ratherTrue: 'Rather TRUE ➡️',
     unsure: '🤔 Unsure...',
+    srcSlotName: 'Source {n}',
+    srcSlotHint: 'click to reveal',
     counterNone: 'Open the {total} sources one by one: you can decide once you have read them all.',
     counterSome: '🔍 {n} more source{s} to open before deciding.',
     counterAll: '✅ You have read all the sources. Time to decide!',
@@ -1686,7 +1690,7 @@ function renderQ(){
   sh.forEach((src,i)=>{
     const b=document.createElement('button');
     b.className='sbtn';b.id='sb'+i;
-    b.innerHTML=`<span class="semoji">🔍</span><div><div class="sname">Source ${i+1}</div><div class="shint-click"><em>clique pour faire apparaître</em></div></div>`;
+    b.innerHTML=`<span class="semoji">🔍</span><div><div class="sname">${t('srcSlotName').replace('{n}',i+1)}</div><div class="shint-click"><em>${t('srcSlotHint')}</em></div></div>`;
     b.onclick=()=>openSrc(src,i,b);
     g.appendChild(b);
   });
@@ -2252,17 +2256,23 @@ function generateBilan(){
     
     // Analyser les évaluations de sources
     h.sourceEvals.forEach(se => {
-      if(se.likertScore === 7){
+      // Une source « le joueur évalue » (mode Créateur) n'a pas de bonne réponse.
+      if(se.isGoodSource !== true && se.isGoodSource !== false) return;
+      // Sans note (niveau Apprenti), likertScore vaut null : il faut le tester avant
+      // de comparer, car « null <= 3 » est vrai en JavaScript et rangeait toutes les
+      // sources fiables parmi celles dont le joueur s'était méfié.
+      const note = typeof se.likertScore === 'number' ? se.likertScore : null;
+      if(note === 7){
         absoluteTrust.push(se.sourceName);
       }
-      if(se.likertScore >= 5 && !se.isGoodSource){
+      if(note !== null && note >= 5 && !se.isGoodSource){
         trustedBadSources.push(se.sourceName);
       }
-      if(se.likertScore <= 3 && se.isGoodSource){
+      if(note !== null && note <= 3 && se.isGoodSource){
         distrustedGoodSources.push(se.sourceName);
       }
-      // Mode junior: userTrusted
-      if(se.likertScore === null){
+      // Niveau Apprenti : userTrusted vaut vrai quand le joueur a vu juste.
+      if(note === null){
         if(!se.userTrusted && !se.isGoodSource){
           trustedBadSources.push(se.sourceName);
         }
@@ -4178,10 +4188,23 @@ async function sendPostGameMessage(){
   }
 }
 
+// Les cartes de niveau et de mode sont des <div> cliquables : sans cela, impossible de
+// lancer une partie au clavier seul. (La carte du mode histoire gère déjà le sien.)
+document.querySelectorAll('.levelcard,.modecard').forEach(c=>{
+  if(c.hasAttribute('tabindex')) return;
+  c.tabIndex=0;c.setAttribute('role','button');
+  c.addEventListener('keydown',e=>{
+    if(e.target!==c) return;
+    if(e.key==='Enter'||e.key===' '||e.key==='Spacebar'){e.preventDefault();c.click();}
+  });
+});
+
 // Affiche le guide automatiquement à la première visite
 try{
   if(localStorage.getItem('fakemetre_howto_seen')!=='true' && $('levelscreen') && $('levelscreen').style.display!=='none'){
-    setTimeout(startHowto,650);
+    // Si le joueur a déjà choisi un niveau entre-temps, on ne lance pas le guide :
+    // startHowto() masquerait la partie en cours pour revenir à l'accueil.
+    setTimeout(()=>{if($('levelscreen').style.display!=='none')startHowto();},650);
   }
 }catch(e){}
 </script>

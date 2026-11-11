@@ -813,3 +813,7 @@ body.en-partie header .brand-gauge{width:32px;height:21px;margin:0;}
   #scorebar .back-btn{margin-right:2px !important;padding:8px 12px;}
   .son-btn{margin-left:0;}
 }
+
+/* Barre de score : « Score : 140 pts » et « Enquête 2 / 5 » restent chacun d'un seul tenant quand la barre passe sur deux lignes. */
+.sb-g{display:inline-flex;align-items:center;gap:10px;white-space:nowrap;}
+@media(max-width:600px){.sb-g{gap:5px;}}

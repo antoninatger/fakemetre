@@ -402,7 +402,7 @@
 
 <div id="scorebar" style="display:none">
   <button class="back-btn" onclick="backToMenu()" style="margin-right:10px;margin-bottom:0;">🏠 Menu</button>
-  <span class="serie" id="serie" style="display:none" aria-live="polite"></span><span data-i18n="scoreLabel">⭐ Score : </span><span class="num" id="sc">0</span><span data-i18n="scorePts"> pts</span><span data-i18n="scoreInv"> | 🧪 Enquête </span><span class="num" id="qn">1</span>/<span id="qtotal">5</span>
+  <span class="serie" id="serie" style="display:none" aria-live="polite"></span><span class="sb-g"><span data-i18n="scoreLabel">⭐ Score : </span><span class="num" id="sc">0</span><span data-i18n="scorePts"> pts</span></span><span class="sb-g"><span data-i18n="scoreInv"> | 🧪 Enquête </span><span class="num" id="qn">1</span>/<span id="qtotal">5</span></span>
 </div>
 <div id="dots" style="display:none"></div>
 
@@ -4429,6 +4429,8 @@ try{
 <!-- Sons et lecture à voix haute (11 novembre) -->
 <script src="ambiance.js"></script>
 <button class="fs-btn" id="fs-btn" onclick="toggleFS()" data-i18n="btnFullscreen">⛶ Plein écran</button>
+<!-- Le bouton est déclaré après le script qui traduit la page : sans cet appel, il restait en français dans la version anglaise. -->
+<script>_updFsBtn();</script>
 
 <!-- WALKTHROUGH "COMMENT ÇA MARCHE" -->
 <div id="howto-overlay" aria-hidden="true" onclick="if(event.target.id==='howto-overlay'||event.target.id==='howto-spot')endHowto()">

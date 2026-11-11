@@ -48,16 +48,19 @@
       <span class="lc-icon">🔎</span>
       <div class="lc-title" data-i18n="juniorTitle">Apprenti Détective</div>
       <div class="lc-desc" data-i18n-html="juniorDesc">Des affirmations du quotidien<br>pour apprendre à douter !</div>
+      <div class="lc-prog" data-niv="junior"></div>
     </div>
     <div class="levelcard inter" onclick="chooseLevel('inter')">
       <span class="lc-icon">🕵️</span>
       <div class="lc-title" data-i18n="interTitle">Enquêteur Junior</div>
       <div class="lc-desc" data-i18n-html="interDesc">Mythes tenaces et sources trompeuses<br>à démasquer !</div>
+      <div class="lc-prog" data-niv="inter"></div>
     </div>
     <div class="levelcard pro" onclick="chooseLevel('pro')">
       <span class="lc-icon">⚡</span>
       <div class="lc-title" data-i18n="proTitle">Fact-Checker Confirmé</div>
       <div class="lc-desc" data-i18n-html="proDesc">Sujets complexes, biais cognitifs<br>et vraies controverses !</div>
+      <div class="lc-prog" data-niv="pro"></div>
     </div>
     <div class="levelcard creator" onclick="openCreator()">
       <span class="lc-icon">✏️</span>
@@ -399,7 +402,7 @@
 
 <div id="scorebar" style="display:none">
   <button class="back-btn" onclick="backToMenu()" style="margin-right:10px;margin-bottom:0;">🏠 Menu</button>
-  <span data-i18n="scoreLabel">⭐ Score : </span><span class="num" id="sc">0</span><span data-i18n="scorePts"> pts</span><span data-i18n="scoreInv"> | 🧪 Enquête </span><span class="num" id="qn">1</span>/<span id="qtotal">5</span>
+  <span class="serie" id="serie" style="display:none" aria-live="polite"></span><span data-i18n="scoreLabel">⭐ Score : </span><span class="num" id="sc">0</span><span data-i18n="scorePts"> pts</span><span data-i18n="scoreInv"> | 🧪 Enquête </span><span class="num" id="qn">1</span>/<span id="qtotal">5</span>
 </div>
 <div id="dots" style="display:none"></div>
 
@@ -657,6 +660,35 @@ const I18N = {
     ratherFalse: '⬅️ Plutôt FAUX',
     ratherTrue: 'Plutôt VRAI ➡️',
     unsure: '🤔 Incertain...',
+    progLabel: '{n} / {tot} affirmations explorées',
+    progDone: '✓ Les {tot} affirmations explorées',
+    serieLabel: '🔥 Série de {n}',
+    btnReplayErrors: '🎯 Rejouer mes erreurs ({n})',
+    recapTitle: '🗂️ Les affirmations de ta partie',
+    recapHint: 'Touche une affirmation pour relire l\'explication.',
+    recapYourVote: 'Ton vote',
+    recapAnswer: 'Réponse',
+    recapTrue: 'VRAI', recapFalse: 'FAUX', recapNuance: 'pas de consensus', recapDebated: 'sujet débattu',
+    profilTitle: '🧭 Ton profil d\'enquêteur',
+    profilFort: 'Ton point fort : {fam}',
+    profilFortDet: '{a} sur {b} bien jugées.',
+    profilFaible: 'Ce qui t\'a le plus piégé(e) : {fam}',
+    profilFaibleDet: '{a} erreur{s} sur {b}.',
+    profilSerie: 'Ta meilleure série : {n} bons verdicts d\'affilée.',
+    fam: {etude:'les études scientifiques', officiel:'les sites officiels', presse:'la presse', ecran:'les films, vidéos et émissions', livre:'les livres', ondit:'les proverbes et les on-dit', pub:'les publicités', expert:'les experts', reseau:'les réseaux sociaux et les forums', blog:'les blogs', temoin:'les témoignages et les avis'},
+    famTip: {
+      etude:'Une étude se juge à sa revue, à sa date et à ce qu\'elle mesure vraiment : regarde si elle parle bien du sujet de l\'affirmation.',
+      officiel:'Un organisme public spécialisé engage sa responsabilité quand il publie. Vérifie seulement que le sujet relève bien de sa mission.',
+      presse:'Demande-toi si l\'article cite ses sources et s\'il sépare les faits des opinions. Un titre choc n\'est pas une preuve.',
+      ecran:'Un film, une série ou une émission cherchent d\'abord à captiver. Ce qu\'on y voit n\'a pas été vérifié pour toi.',
+      livre:'Un livre peut être dépassé ou écrit pour vendre. Regarde qui l\'a écrit, quand, et dans quel but.',
+      ondit:'Une idée répétée par tout le monde reste une idée répétée. Cherche d\'où elle vient avant de la croire.',
+      pub:'Une publicité a quelque chose à te vendre. Ce qu\'elle affirme sert d\'abord la marque.',
+      expert:'Un titre impressionne, mais un expert n\'est fiable que dans son domaine. Vérifie qu\'il parle bien de sa spécialité.',
+      reseau:'Les mentions « j\'aime » et les partages mesurent le succès d\'un message, pas sa vérité. Cherche qui parle et sur quoi il s\'appuie.',
+      blog:'N\'importe qui peut tenir un blog. Cherche l\'auteur, ses sources, et ce qu\'il gagne à te convaincre.',
+      temoin:'Un témoignage raconte un cas, même sincère. Pour une règle générale, il faut des observations nombreuses et vérifiées.'
+    },
     srcSlotName: 'Source {n}',
     srcSlotHint: 'clique pour faire apparaître',
     counterNone: 'Ouvre les {total} sources une par une : tu pourras décider quand tu les auras toutes lues.',
@@ -1046,6 +1078,35 @@ const I18N = {
     ratherFalse: '⬅️ Rather FALSE',
     ratherTrue: 'Rather TRUE ➡️',
     unsure: '🤔 Unsure...',
+    progLabel: '{n} / {tot} claims explored',
+    progDone: '✓ All {tot} claims explored',
+    serieLabel: '🔥 Streak of {n}',
+    btnReplayErrors: '🎯 Replay my mistakes ({n})',
+    recapTitle: '🗂️ The claims in your game',
+    recapHint: 'Tap a claim to read the explanation again.',
+    recapYourVote: 'Your vote',
+    recapAnswer: 'Answer',
+    recapTrue: 'TRUE', recapFalse: 'FALSE', recapNuance: 'no consensus', recapDebated: 'debated topic',
+    profilTitle: '🧭 Your investigator profile',
+    profilFort: 'Your strong point: {fam}',
+    profilFortDet: '{a} out of {b} judged correctly.',
+    profilFaible: 'What tricked you most: {fam}',
+    profilFaibleDet: '{a} mistake{s} out of {b}.',
+    profilSerie: 'Your best streak: {n} correct verdicts in a row.',
+    fam: {etude:'scientific studies', officiel:'official sites', presse:'the press', ecran:'films, videos and TV shows', livre:'books', ondit:'sayings and hearsay', pub:'advertisements', expert:'experts', reseau:'social media and forums', blog:'blogs', temoin:'testimonies and opinions'},
+    famTip: {
+      etude:'Judge a study by its journal, its date and what it actually measures: check that it really addresses the claim.',
+      officiel:'A specialised public body is accountable for what it publishes. Just check that the topic falls within its remit.',
+      presse:'Ask whether the article cites its sources and separates facts from opinions. A shocking headline is not evidence.',
+      ecran:'Films, series and TV shows aim to grip you first. What you see there has not been checked for you.',
+      livre:'A book can be outdated or written to sell. Look at who wrote it, when, and why.',
+      ondit:'An idea everyone repeats is still just a repeated idea. Find out where it comes from before believing it.',
+      pub:'An advertisement has something to sell you. What it claims serves the brand first.',
+      expert:'A title is impressive, but an expert is only reliable within their field. Check they are speaking about their specialty.',
+      reseau:'Likes and shares measure how popular a message is, not how true. Find out who is speaking and what they rely on.',
+      blog:'Anyone can run a blog. Look for the author, their sources, and what they gain by convincing you.',
+      temoin:'A testimony tells one case, even a sincere one. A general rule needs many verified observations.'
+    },
     srcSlotName: 'Source {n}',
     srcSlotHint: 'click to reveal',
     counterNone: 'Open the {total} sources one by one: you can decide once you have read them all.',
@@ -1370,10 +1431,17 @@ let meterStart=null;
 // ── État persistant entre les questions / parties ──
 let gameMode=5, currentLevel='junior', playingCustom=false, playingCommunity=false, cursorTutorialSeen=false;
 let currentPackInfo=null; // {title, author} quand on joue un pack communauté, sinon null
+// Série de bons verdicts en cours, et la meilleure de la partie.
+let serie=0, meilleureSerie=0;
+// Les affirmations ratées de la dernière partie, pour « Rejouer mes erreurs ».
+let erreursAFaire=[];
+// Le mode (5 ou 10) de la dernière partie normale : « Rejouer » y revient après une
+// partie « mes erreurs ».
+let modeNormal=5;
 
 function resetGameState(){
   qi=0; score=0; meter=50; uc=0; sh=[]; um={}; pend=null; tempMeter=50; gameHistory=[];
-  meterStart=null;
+  meterStart=null; serie=0; meilleureSerie=0; majSerie();
   currentPackInfo=null;
 }
 
@@ -1487,6 +1555,79 @@ function backToMenu(){
   }
 }
 
+// ── Mémoire des affirmations vues ──
+// On retient, par niveau, le rang des affirmations déjà jouées (le même en français et
+// en anglais : les deux tableaux sont alignés), de la plus ancienne à la plus récente.
+// Le tirage sert d'abord celles qu'on n'a jamais vues ; quand il n'en reste plus assez,
+// il complète par les plus anciennes. Une classe qui enchaîne les parties ne retombe
+// donc sur une affirmation qu'une fois le niveau épuisé.
+const CLE_VUES='fakemetre_vues_v1';
+function lireVues(){
+  try{const v=JSON.parse(localStorage.getItem(CLE_VUES)||'{}');return (v&&typeof v==='object'&&!Array.isArray(v))?v:{};}catch(e){return {};}
+}
+function poolsNiveau(niv){
+  if(niv==='pro') return [QUESTIONS_PRO,QUESTIONS_PRO_EN];
+  if(niv==='inter') return [QUESTIONS_INTER,QUESTIONS_INTER_EN];
+  return [QUESTIONS_JUNIOR,QUESTIONS_JUNIOR_EN];
+}
+function vuesNiveau(niv,total){
+  const l=lireVues()[niv];
+  return Array.isArray(l)?l.filter((i,k)=>Number.isInteger(i)&&i>=0&&i<total&&l.indexOf(i)===k):[];
+}
+function tirerQuestions(pool,niv,n){
+  const vues=vuesNiveau(niv,pool.length), deja=new Set(vues);
+  let choix=shuf(pool.map((_,i)=>i).filter(i=>!deja.has(i))).slice(0,n);
+  if(choix.length<n) choix=choix.concat(vues.slice(0,n-choix.length));
+  return shuf(choix).map(i=>pool[i]);
+}
+function noterVue(q){
+  for(const niv of ['junior','inter','pro']){
+    const [fr,en]=poolsNiveau(niv);
+    let i=fr.indexOf(q); if(i<0) i=en.indexOf(q);
+    if(i<0) continue;
+    const tout=lireVues();
+    const l=vuesNiveau(niv,Math.max(fr.length,en.length)).filter(x=>x!==i);
+    l.push(i); tout[niv]=l;
+    try{localStorage.setItem(CLE_VUES,JSON.stringify(tout));}catch(e){}
+    return;
+  }
+}
+// La progression affichée sur chaque carte de niveau.
+function majProgression(){
+  document.querySelectorAll('.lc-prog').forEach(el=>{
+    const niv=el.dataset.niv, tot=poolsNiveau(niv)[lang==='en'?1:0].length;
+    const n=vuesNiveau(niv,tot).length;
+    if(!n){el.innerHTML='';return;}
+    const txt=(n>=tot?t('progDone'):t('progLabel')).replace('{n}',n).replace(/\{tot\}/g,tot);
+    el.innerHTML=`<div class="lc-prog-bar"><div class="lc-prog-fill" style="width:${Math.round(100*n/tot)}%"></div></div><div class="lc-prog-txt">${txt}</div>`;
+  });
+}
+function majSerie(){
+  const el=$('serie'); if(!el) return;
+  if(serie>=2){el.textContent=t('serieLabel').replace('{n}',serie);el.style.display='';
+    el.classList.remove('serie-pop');void el.offsetWidth;el.classList.add('serie-pop');}
+  else el.style.display='none';
+}
+// Les familles de sources, pour le profil de fin de partie.
+function familleSource(src){
+  if(src.studyJournal) return 'etude';
+  if(src.govSite) return 'officiel';
+  if(src.pressOutlet) return 'presse';
+  if(src.mediaTitle||src.mediaType||src.videoSrc) return 'ecran';
+  if(src.bookTitle||src.bookType) return 'livre';
+  if(src.quoteType) return 'ondit';
+  if(src.adType) return 'pub';
+  if(src.expertTitle) return 'expert';
+  if(src.imgUser||src.tweetUser||src.forumUser||src.waForwarded||src.gmapsUser||src.redditSub||src.linkedinUser) return 'reseau';
+  if(src.blogTitle) return 'blog';
+  return 'temoin';
+}
+function rejouerErreurs(){
+  if(!erreursAFaire.length) return;
+  $('final').style.display='none';
+  startGame('erreurs');
+}
+
 // ── Démarrer la partie ──
 function startGame(mode){
   gameMode=mode;
@@ -1496,8 +1637,10 @@ function startGame(mode){
   if(currentLevel==='pro') pool=isEN?QUESTIONS_PRO_EN:QUESTIONS_PRO;
   else if(currentLevel==='inter') pool=isEN?QUESTIONS_INTER_EN:QUESTIONS_INTER;
   else pool=isEN?QUESTIONS_JUNIOR_EN:QUESTIONS_JUNIOR;
-  const all=[...pool];
-  QS = mode===5 ? shuf(all).slice(0,5) : shuf(all).slice(0,10);
+  if(mode==='erreurs' && !erreursAFaire.length) mode=modeNormal;
+  if(mode!=='erreurs') modeNormal=mode;
+  gameMode=mode;
+  QS = mode==='erreurs' ? shuf(erreursAFaire) : tirerQuestions(pool, currentLevel, mode===5?5:10);
   resetGameState();
   $('modescreen').style.display='none';
   $('scorebar').style.display='flex';
@@ -1522,7 +1665,7 @@ function restart(){
     initMeterDrag();
     renderQ();
   } else {
-    startGame(gameMode);
+    startGame(gameMode==='erreurs'?modeNormal:gameMode);
   }
 }
 
@@ -2140,6 +2283,8 @@ function submitV(v){
     correctAnswer: q.t,
     hasNuance: q.nuance || false,
     wasCorrect: ok,
+    q: q,
+    expl: expl,
     meterStart: Math.round(mDepart),
     meterEnd: Math.round(mArrivee),
     sourceEvals: []
@@ -2147,7 +2292,11 @@ function submitV(v){
   // Récupérer les évaluations de sources
   sh.forEach((src, i) => {
     if(um[i] !== undefined){
+      const jg=jugementSource(src,i);
       currentQHistory.sourceEvals.push({
+        famille: familleSource(src),
+        juste: src.g===true?jg.confiance:(src.g===false?jg.mefiance:false),
+        rate:  src.g===true?jg.mefiance:(src.g===false?jg.confiance:false),
         sourceName: src.n,
         isGoodSource: src.g,
         userTrusted: um[i] === 'ug', // ug = user trusted good, ub = user trusted bad
@@ -2156,6 +2305,10 @@ function submitV(v){
     }
   });
   gameHistory.push(currentQHistory);
+  serie = ok ? serie+1 : 0;
+  if(serie>meilleureSerie) meilleureSerie=serie;
+  majSerie();
+  noterVue(q);
   
   const fxEl=$('vremoji');
   fxEl.classList.remove('fx-good','fx-bad');
@@ -2205,19 +2358,69 @@ function showFinal(){
   const bilan = generateBilan();
 
   const tips=t('finalTips');
+  const horsPacks=!playingCustom&&!playingCommunity;
+  erreursAFaire=horsPacks?gameHistory.filter(h=>!h.wasCorrect&&h.q).map(h=>h.q):[];
+  const nErr=erreursAFaire.length;
   $('final').style.display='block';
+  // Les boutons viennent juste sous le score : sur téléphone, ils étaient tout en bas
+  // d'un écran de 2 500 px, sous le formulaire de message.
   $('final').innerHTML=`
     <span class="fmedal">${m}</span>
     <h2 class="fh2">${t('finalTitle')}</h2>
     <p style="color:var(--mu);font-weight:700;margin-bottom:8px">${c}</p>
     <div class="fscore" id="fscore-num">0&nbsp;pts</div>
+    <div class="fbtns">
+      <button id="rbtn" onclick="restart()">${t('btnReplay')}</button>
+      ${nErr?`<button id="ebtn" onclick="rejouerErreurs()">${t('btnReplayErrors').replace('{n}',nErr)}</button>`:''}
+      <button id="mbtn" onclick="chooseMode()">${t('btnMenu')}</button>
+    </div>
+    ${recapPartie()}
     ${bilan ? `<div class="bilan-perso">${bilan}</div>` : ''}
-    <div class="ftips"><h3>${t('finalTipsTitle')}</h3>${tips.map(tp=>`<div class="tip"><span>${tp[0]}</span><span>${tp[1]}</span></div>`).join('')}</div>
+    ${profilPartie()}
+    <details class="ftips"><summary><h3>${t('finalTipsTitle')}</h3></summary>${tips.map(tp=>`<div class="tip"><span>${tp[0]}</span><span>${tp[1]}</span></div>`).join('')}</details>
     <div class="pj-rangee" style="margin:14px 0"></div>
-    ${finalMsgHTML()}
-    <button id="rbtn" onclick="restart()">${t('btnReplay')}</button>
-    <button id="mbtn" onclick="chooseMode()">${t('btnMenu')}</button>`;
+    ${finalMsgHTML()}`;
+  majProgression();
   animateScore(score);
+}
+
+// Le récapitulatif des affirmations jouées : ce qu'on a voté, la réponse, l'explication.
+function recapPartie(){
+  if(!gameHistory.length) return '';
+  const nom=v=>v==='nuance'?t('recapNuance'):(v?t('recapTrue'):t('recapFalse'));
+  const lignes=gameHistory.map(h=>{
+    const rep=h.hasNuance?`${nom(h.correctAnswer)} · ${t('recapDebated')}`:nom(h.correctAnswer);
+    return `<details class="recap-q ${h.wasCorrect?'ok':'ko'}">
+      <summary><span class="recap-mark">${h.wasCorrect?'✓':'✗'}</span><span class="recap-s">${escH(h.question)}</span></summary>
+      <div class="recap-votes"><span>${t('recapYourVote')} : <b>${nom(h.userVote)}</b></span><span>${t('recapAnswer')} : <b>${rep}</b></span></div>
+      <div class="recap-e">${escH(h.expl||'')}</div>
+    </details>`;
+  }).join('');
+  return `<div class="recap-partie"><h3>${t('recapTitle')}</h3><p class="recap-hint">${t('recapHint')}</p>${lignes}</div>`;
+}
+
+// Le profil : par famille de sources, où le joueur a vu juste et où il s'est fait piéger.
+function profilPartie(){
+  const fams={};
+  gameHistory.forEach(h=>h.sourceEvals.forEach(se=>{
+    if(!se.famille||(se.isGoodSource!==true&&se.isGoodSource!==false)) return;
+    const f=fams[se.famille]||(fams[se.famille]={n:0,ok:0,ko:0});
+    f.n++; if(se.juste) f.ok++; if(se.rate) f.ko++;
+  }));
+  const liste=Object.entries(fams);
+  const faible=liste.filter(([,f])=>f.ko>0).sort((a,b)=>b[1].ko-a[1].ko||(b[1].ko/b[1].n)-(a[1].ko/a[1].n))[0];
+  const fort=liste.filter(([k,f])=>f.ko===0&&f.ok>=2&&(!faible||k!==faible[0])).sort((a,b)=>b[1].ok-a[1].ok)[0];
+  const items=[];
+  if(faible){const [k,f]=faible;
+    items.push(`<div class="bilan-item warn"><span class="bilan-icon">🪤</span><div><strong>${t('profilFaible').replace('{fam}',t('fam')[k])}</strong><br>
+      <em>${t('profilFaibleDet').replace('{a}',f.ko).replace('{s}',f.ko>1?'s':'').replace('{b}',f.n)}</em><br><span class="bilan-tip">→ ${t('famTip')[k]}</span></div></div>`);}
+  if(fort){const [k,f]=fort;
+    items.push(`<div class="bilan-item good"><span class="bilan-icon">🎯</span><div><strong>${t('profilFort').replace('{fam}',t('fam')[k])}</strong><br>
+      <span class="bilan-tip">${t('profilFortDet').replace('{a}',f.ok).replace('{b}',f.n)}</span></div></div>`);}
+  if(meilleureSerie>=2){
+    items.push(`<div class="bilan-item info"><span class="bilan-icon">🔥</span><div><strong>${t('profilSerie').replace('{n}',meilleureSerie)}</strong></div></div>`);}
+  if(!items.length) return '';
+  return `<div class="bilan-perso"><h3 style="margin-bottom:12px;">${t('profilTitle')}</h3>${items.join('')}</div>`;
 }
 
 /* Fait défiler le score de 0 jusqu'au total sur l'écran final */
@@ -4199,6 +4402,17 @@ document.querySelectorAll('.levelcard,.modecard').forEach(c=>{
   });
 });
 
+// En-tête compact pendant la partie : la barre de score n'est visible qu'en jeu, on s'y
+// fie pour replier le titre, la signature et les boutons, qui occupaient la moitié de
+// l'écran d'un téléphone à chaque question.
+(function(){
+  const sb=$('scorebar'); if(!sb||!window.MutationObserver) return;
+  const maj=()=>document.body.classList.toggle('en-partie',sb.style.display!=='none');
+  new MutationObserver(maj).observe(sb,{attributes:true,attributeFilter:['style']});
+  maj();
+})();
+majProgression();
+
 // Affiche le guide automatiquement à la première visite
 try{
   if(localStorage.getItem('fakemetre_howto_seen')!=='true' && $('levelscreen') && $('levelscreen').style.display!=='none'){
@@ -4212,6 +4426,8 @@ try{
 <!-- Le vote du public par téléphone (24 octobre) : la case « Le public vote par téléphone » et le QR code. -->
 <script src="vote-qrcode.js"></script>
 <script src="vote-telephone.js"></script>
+<!-- Sons et lecture à voix haute (11 novembre) -->
+<script src="ambiance.js"></script>
 <button class="fs-btn" id="fs-btn" onclick="toggleFS()" data-i18n="btnFullscreen">⛶ Plein écran</button>
 
 <!-- WALKTHROUGH "COMMENT ÇA MARCHE" -->

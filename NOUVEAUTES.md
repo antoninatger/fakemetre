@@ -1,5 +1,32 @@
 # Nouveautés FakeMètre
 
+## Mise à jour, 11 novembre 2026 (fin de partie, mémoire, son et voix)
+
+### 🗂️ Une fin de partie qui apprend
+
+- **Récapitulatif** des affirmations jouées : on touche une affirmation pour relire son vote, la réponse et l'explication.
+- **« Rejouer mes erreurs »** relance une partie avec les seules affirmations ratées.
+- **Profil d'enquêteur** : la famille de sources qui a le plus piégé le joueur (proverbes, réseaux sociaux, experts, publicités…), avec un conseil qui la concerne, son point fort, et sa meilleure série.
+- Les boutons « Rejouer » et « Menu » sont juste sous le score (sur téléphone, ils étaient tout en bas, sous le formulaire). Les « bons réflexes » généraux sont repliés.
+
+### 🧠 On ne retombe plus sur les mêmes affirmations
+
+Le jeu retient, par niveau, les affirmations déjà jouées sur l'appareil. Le tirage sert d'abord celles qu'on n'a jamais vues, puis les plus anciennes. Chaque carte de niveau affiche la progression (« 12 / 44 affirmations explorées »). Clé `fakemetre_vues_v1` du stockage local.
+
+### 📱 En-tête compact pendant la partie
+
+Le titre se replie sur une ligne dès qu'une partie commence : sur téléphone, l'affirmation est en haut de l'écran.
+
+### 🔊 Sons, série et lecture à voix haute
+
+- Sons brefs (synthétisés, aucun fichier) à l'ouverture d'une source, au verdict et en fin de partie. Le bouton 🔊 de la barre de score les coupe, et le choix est retenu.
+- **Série** : à partir de deux bons verdicts d'affilée, « 🔥 Série de 3 » s'affiche dans la barre de score. Elle ne rapporte pas de points.
+- **« Écouter »** sous l'affirmation et dans chaque source : le navigateur lit le texte à voix haute, en français ou en anglais. Rien n'est lu sans qu'on le demande.
+
+> Fichiers : `index.html` (tirage, fin de partie), `ambiance.js` (sons et voix, nouveau), styles en fin de `fakemetre.css`.
+
+---
+
 ## Mise à jour, 11 novembre 2026 (sept défauts corrigés)
 
 - **Bilan du niveau Apprenti** : il annonçait « tu t'es méfié(e) de sources pourtant fiables » à chaque partie, en listant les sources fiables même quand le joueur leur avait fait confiance (`null <= 3` est vrai en JavaScript). Corrigé dans `generateBilan()`.

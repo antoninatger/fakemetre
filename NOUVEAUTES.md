@@ -1,5 +1,28 @@
 # Nouveautés FakeMètre
 
+## Mise à jour, 12 novembre 2026 (Fact-Checker : « toujours Faux » ne paie plus)
+
+### ⚖️ Dix affirmations nuancées penchent maintenant vers le vrai
+
+Au niveau Fact-Checker, la meilleure réponse à une affirmation nuancée est « Pas de consensus clair » (60 points), mais le jeu accepte aussi une réponse de repli (50 points). Ce repli était « Faux » pour 21 affirmations nuancées sur 25 : avec les 25 affirmations franchement fausses, répondre toujours « Faux » rapportait des points 46 fois sur 72.
+
+Dix affirmations nuancées sont reformulées pour pencher du côté vrai, en français et en anglais. Les sources ne changent pas, seuls l'énoncé et l'explication sont réécrits :
+
+- Il existe un « continent de plastique » dans l'océan Pacifique.
+- Les personnes qui mangent beaucoup de bio ont moins de cancers que les autres.
+- Les antidépresseurs sont plus efficaces qu'un placebo.
+- Les pesticides jouent un rôle majeur dans le déclin des abeilles.
+- La sensibilité au gluten sans maladie cœliaque existe vraiment : ce n'est pas qu'une mode.
+- Des études montrent que les gens heureux vivent plus longtemps. (énoncé inchangé, désormais compté plutôt vrai)
+- Le jeûne intermittent fait maigrir aussi bien qu'un régime classique.
+- Au Moyen Âge, l'espérance de vie était d'environ 30 ans.
+- Le modèle standard de la cosmologie explique correctement l'essentiel de ce qu'on observe de l'Univers.
+- Le climat se réchauffe à cause des humains, et il existe des points de bascule au-delà desquels certains changements deviendraient irréversibles.
+
+Résultat : 22 affirmations vraies, 25 fausses, 25 nuancées (14 qui penchent vers le vrai, 11 vers le faux). « Vrai » et « Faux » rapportent chacun des points 36 fois sur 72.
+
+---
+
 ## Mise à jour, 11 novembre 2026 (le mode histoire s'étend)
 
 ### 📖 Enquêteur Junior : « La Cellule Vérif »

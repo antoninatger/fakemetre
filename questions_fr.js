@@ -2270,7 +2270,7 @@ const QUESTIONS_PRO=[
      say:"« Un médicament dont on ignorerait le mécanisme n'aurait jamais reçu d'autorisation. S'il est en vente libre et donné aux nourrissons, c'est qu'on sait parfaitement comment il agit. »",
      g:false,fb:{tb:"Le raisonnement est bien construit mais sa prémisse est fausse : une autorisation se fonde sur l'efficacité et la sécurité mesurées, pas sur l'élucidation du mécanisme. Une logique valide sur une prémisse fausse conclut faux.",db:"La forme du raisonnement est correcte, sa prémisse ne l'est pas. Rien n'exige de comprendre un mécanisme pour démontrer un effet."}},
   ]},
-  {s:"La transplantation de matières fécales est un médicament autorisé.",t:true,
+  {s:"Aux États-Unis, la transplantation de matières fécales est devenue un médicament autorisé.",t:true,
    e:"C'est VRAI. Deux produits issus de selles de donneurs humains sont approuvés par l'agence américaine du médicament pour prévenir la récidive d'infection à Clostridioides difficile : Rebyota (voie rectale, novembre 2022), puis Vowst (voie orale, avril 2023). Ce ne sont pas des essais en cours mais des autorisations de mise sur le marché, avec dépistage des donneurs et fabrication contrôlée. L'énoncé a la forme exacte d'un canular ; c'est un fait.",
    src:[
     {em:"🏛️",n:"FDA, communiqué du 26 avril 2023",d:"Agence américaine du médicament",govSite:"U.S. Food and Drug Administration",govDomain:"fda.gov",
@@ -2325,8 +2325,8 @@ const QUESTIONS_PRO=[
      say:"« On rase la forêt française pour faire des granulés de chauffage. Il n'y a jamais eu aussi peu d'arbres dans ce pays. »",
      g:false,fb:{tb:"Le sujet des coupes pour le bois-énergie est réel et discuté. La conclusion « jamais aussi peu d'arbres » est contredite par la mesure : la surface est au plus haut depuis deux siècles.",db:"Une inquiétude défendable est ici transformée en affirmation chiffrée fausse. La première mérite un débat, la seconde est démentie par l'inventaire."}},
   ]},
-  {s:"Les pluies acides ont été largement réglées par un traité signé en 1979.",t:true,
-   e:"C'est VRAI. La Convention de Genève sur la pollution atmosphérique transfrontière à longue distance, signée en 1979 par trente-deux pays européens, les États-Unis et le Canada, a été suivie de huit protocoles. Les émissions européennes de dioxyde de soufre ont chuté de 80 % ou plus par rapport aux pics des années 1980, et la recolonisation biologique des lacs et rivières acidifiés est mesurée. Le sujet a disparu des médias parce qu'il a été traité.",
+  {s:"En Europe et en Amérique du Nord, les pluies acides ont été largement réglées grâce à un traité signé en 1979 et à ses suites.",t:true,
+   e:"C'est VRAI, en Europe et en Amérique du Nord. La Convention de Genève sur la pollution atmosphérique transfrontière à longue distance, signée en 1979 par trente-deux pays européens, les États-Unis et le Canada, a été suivie de huit protocoles ; en Amérique du Nord, elle a été relayée par le Clean Air Act américain de 1990 et l'accord Canada–États-Unis de 1991. Les émissions européennes de dioxyde de soufre ont chuté de 80 % ou plus par rapport aux pics des années 1980, et la recolonisation biologique des lacs et rivières acidifiés est mesurée. Ailleurs, l'histoire est différente : la Chine et l'Inde, qui ne sont pas parties au traité, n'ont commencé à réduire leurs émissions que bien plus tard, et l'Inde est aujourd'hui le premier émetteur mondial de dioxyde de soufre. Le sujet a disparu des médias européens et nord-américains parce qu'il y a été traité, pas parce qu'il a disparu de la planète.",
    src:[
     {em:"🏛️",n:"CEE-ONU, bilan de la Convention de 1979",d:"Commission économique des Nations unies pour l'Europe",govSite:"UNECE",govDomain:"unece.org",
      url:"https://unece.org/environmental-policy/air/convention-and-its-achievements",

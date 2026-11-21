@@ -2265,7 +2265,7 @@ const QUESTIONS_PRO_EN=[
      say:"\"A drug whose mechanism was unknown would never have been authorised. If it is sold over the counter and given to infants, then we know perfectly well how it works.\"",
      g:false,fb:{tb:"The reasoning is well built but its premise is false: authorisation rests on measured efficacy and safety, not on an elucidated mechanism. Valid logic on a false premise concludes falsely.",db:"The form of the argument is correct, its premise is not. Nothing requires understanding a mechanism in order to demonstrate an effect."}},
   ]},
-  {s:"Faecal transplantation is an approved medicine.",t:true,
+  {s:"In the United States, faecal transplantation has become an approved medicine.",t:true,
    e:"TRUE. Two products derived from human donor stool are approved by the US Food and Drug Administration to prevent recurrence of Clostridioides difficile infection: Rebyota (rectal route, November 2022) and then Vowst (oral route, April 2023). These are not ongoing trials but marketing authorisations, with donor screening and controlled manufacturing. The statement has the exact shape of a hoax; it is a fact.",
    src:[
     {em:"🏛️",n:"FDA press announcement, 26 April 2023",d:"US Food and Drug Administration",govSite:"U.S. Food and Drug Administration",govDomain:"fda.gov",
@@ -2320,8 +2320,8 @@ const QUESTIONS_PRO_EN=[
      say:"\"French forests are being razed to make heating pellets. There have never been so few trees in this country.\"",
      g:false,fb:{tb:"Logging for wood energy is a real and contested subject. The conclusion 'never so few trees' is contradicted by the measurement: the area is at its highest in two centuries.",db:"A defensible worry is turned here into a false numerical claim. The first deserves a debate, the second is refuted by the inventory."}},
   ]},
-  {s:"Acid rain was largely solved by a treaty signed in 1979.",t:true,
-   e:"TRUE. The Geneva Convention on Long-range Transboundary Air Pollution, signed in 1979 by thirty-two European countries, the United States and Canada, was followed by eight protocols. European sulphur dioxide emissions have fallen by 80% or more from their 1980s peaks, and the biological recovery of acidified lakes and rivers has been measured. The subject vanished from the news because it was dealt with.",
+  {s:"In Europe and North America, acid rain was largely solved thanks to a treaty signed in 1979 and what followed it.",t:true,
+   e:"TRUE, in Europe and North America. The Geneva Convention on Long-range Transboundary Air Pollution, signed in 1979 by thirty-two European countries, the United States and Canada, was followed by eight protocols; in North America it was carried forward by the US Clean Air Act of 1990 and the 1991 Canada–United States agreement. European sulphur dioxide emissions have fallen by 80% or more from their 1980s peaks, and the biological recovery of acidified lakes and rivers has been measured. Elsewhere the story is different: China and India, which are not parties to the treaty, only began cutting their emissions much later, and India is now the world's largest emitter of sulphur dioxide. The subject vanished from European and American news because it was dealt with there, not because it vanished from the planet.",
    src:[
     {em:"🏛️",n:"UNECE, achievements of the 1979 Convention",d:"United Nations Economic Commission for Europe",govSite:"UNECE",govDomain:"unece.org",
      url:"https://unece.org/environmental-policy/air/convention-and-its-achievements",

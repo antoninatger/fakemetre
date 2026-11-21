@@ -892,6 +892,7 @@ const I18N = {
     bilanMeterBadTip: 'Tu as déplacé ton curseur {n} fois après avoir lu les sources, mais seulement {m} vers la bonne réponse. Une source qui te conforte n\'est pas forcément une source fiable.',
     // ── Jeu : récapitulatif des sources au verdict ──
     vrSrcTitle: '🔍 Ce que valaient tes sources',
+    vrPtsSources: ' · sources {p}',
     vrSrcReliable: 'Source fiable',
     vrSrcUnreliable: 'Source peu fiable',
     vrSrcRated: 'tu l\'as notée {n}/7',
@@ -1310,6 +1311,7 @@ const I18N = {
     bilanMeterBadTip: 'You moved your slider {n} times after reading the sources, but only {m} towards the right answer. A source that confirms you is not necessarily a reliable one.',
     // ── Game : source recap at the verdict ──
     vrSrcTitle: '🔍 What your sources were worth',
+    vrPtsSources: ' · sources {p}',
     vrSrcReliable: 'Reliable source',
     vrSrcUnreliable: 'Unreliable source',
     vrSrcRated: 'you rated it {n}/7',
@@ -1428,6 +1430,11 @@ let QS=[], qi=0, score=0, meter=50, uc=0, sh=[], um={}, pend=null, tempMeter=50,
 // Position du curseur à l'ouverture de la première source de la question courante :
 // c'est elle qu'on compare à la position au vote pour savoir si l'enquête a servi.
 let meterStart=null;
+// Score à l'ouverture de la question, et points gagnés ou perdus sur chacune de ses
+// sources en Junior (par index de source). Le score affiché se recalcule à partir des
+// deux : changer d'avis sur une source remplace ses points au lieu d'empiler des
+// corrections, et le plancher à 0 ne s'applique qu'une fois, sur le total.
+let scoreDebut=0, ptsJunior={};
 // ── État persistant entre les questions / parties ──
 let gameMode=5, currentLevel='junior', playingCustom=false, playingCommunity=false, cursorTutorialSeen=false;
 let currentPackInfo=null; // {title, author} quand on joue un pack communauté, sinon null
@@ -1813,6 +1820,7 @@ function updCounter(){
 function renderQ(){
   const q=QS[qi];
   meter=50;uc=0;um={};meterStart=null;
+  scoreDebut=score;ptsJunior={};
   $('stxt').textContent=q.s;
   $('qn').textContent=qi+1;
   $('sc').textContent=score;
@@ -2086,6 +2094,10 @@ function searchSource(){
   window.open('https://www.google.com/search?q=' + query, '_blank');
 }
 
+function sommePts(m){
+  return Object.values(m).reduce((a,b)=>a+b,0);
+}
+
 function trust(trusts){
   const{src,idx,btn,isEdit}=pend;
   let pts,emoji,title,expl,pc,oc;
@@ -2093,19 +2105,12 @@ function trust(trusts){
   else if(src.g===true)     {pts=-10;pc='neg';oc='ub';emoji='😬';title=t('trustTitleGoodDistrust');expl=src.fb.dg||'';}
   else if(trusts)            {pts=-20;pc='neg';oc='ub';emoji='😬';title=t('trustTitleBadTrust');    expl=src.fb.tb||'';}
   else                       {pts=20; pc='pos';oc='ug';emoji='👏';title=t('trustTitleBadDistrust'); expl=src.fb.db||'';}
-  if(isEdit){
-    // Inverser le score précédent avant d'appliquer le nouveau
-    const prevOc=um[idx];
-    let prevPts=0;
-    if(src.g===true&&prevOc==='ug') prevPts=30;
-    else if(src.g===true&&prevOc==='ub') prevPts=-10;
-    else if(prevOc==='ub') prevPts=20;
-    else prevPts=-20;
-    score=Math.max(0,score-prevPts);
-  } else {
-    uc++;
-  }
-  score=Math.max(0,score+pts);
+  // Changer d'avis remplace les points de la source. L'ancienne correction retranchait
+  // un montant recalculé, faux pour une source douteuse (elle inversait -20 et +20) et
+  // faussé par le plancher à 0 : se tromper puis se corriger pouvait rapporter 40.
+  if(!isEdit) uc++;
+  ptsJunior[idx]=pts;
+  score=Math.max(0,scoreDebut+sommePts(ptsJunior));
   um[idx]=oc;
   btn.classList.remove('ug','ub');
   btn.classList.add(oc);
@@ -2254,8 +2259,6 @@ function submitV(v){
     expl = q.e;
   }
   
-  score = Math.max(0, score + pts);
-
   // Points des sources. En Junior, trust() les donne au fil de l'eau. Aux niveaux
   // où la source est notée à l'échelle de Likert, l'évaluation est différée
   // jusqu'ici : les afficher plus tôt révélerait la fiabilité avant le vote.
@@ -2265,13 +2268,18 @@ function submitV(v){
     const j=jugementSource(src,i);
     ptsSrc+=ptsSource(src,j.confiance,j.mefiance);
   });
-  score = Math.max(0, score + ptsSrc);
+  // Un seul plancher à 0, sur le total de la question : deux planchers successifs
+  // (après le vote, puis après les sources) faisaient dépendre le score de l'ordre.
+  score = Math.max(0, scoreDebut + sommePts(ptsJunior) + pts + ptsSrc);
 
   $('sc').textContent = score;
   $('vremoji').textContent = emoji;
   $('vrtitle').textContent = title;
   $('vrexpl').textContent = expl;
-  $('vrpts').textContent = (pts >= 0 ? '+' : '') + pts + ' pts';
+  // Le vote et les sources notées au verdict s'affichent ensemble : montrer « +50 »
+  // pendant que le compteur prenait +110 rendait le score incompréhensible.
+  const signe = n => (n >= 0 ? '+' : '') + n;
+  $('vrpts').textContent = signe(pts) + ' pts' + (ptsSrc ? t('vrPtsSources').replace('{p}', signe(ptsSrc)) : '');
   $('vrpts').className = 'fbpts ' + (ok ? 'pos' : 'neg');
   $('vrmeter').textContent = commentaireCurseur(q, mDepart, mArrivee);
   $('vrsources').innerHTML = recapSources();

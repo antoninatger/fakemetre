@@ -895,7 +895,7 @@ const I18N = {
     vrPtsSources: ' · sources {p}',
     vrSrcReliable: 'Source fiable',
     vrSrcUnreliable: 'Source peu fiable',
-    vrSrcRated: 'tu l\'as notée {n}/7',
+    vrSrcRated: 'tu l\'as notée {n}/7 ({l})',
     vrSrcTrusted: 'tu lui as fait confiance',
     vrSrcDoubted: 'tu t\'en es méfié(e)',
     vrSrcSkipped: 'tu ne l\'as pas consultée',
@@ -1314,7 +1314,7 @@ const I18N = {
     vrPtsSources: ' · sources {p}',
     vrSrcReliable: 'Reliable source',
     vrSrcUnreliable: 'Unreliable source',
-    vrSrcRated: 'you rated it {n}/7',
+    vrSrcRated: 'you rated it {n}/7 ({l})',
     vrSrcTrusted: 'you trusted it',
     vrSrcDoubted: 'you were wary of it',
     vrSrcSkipped: "you didn't check it",
@@ -2101,8 +2101,8 @@ function sommePts(m){
 function trust(trusts){
   const{src,idx,btn,isEdit}=pend;
   let pts,emoji,title,expl,pc,oc;
-  if(src.g===true&&trusts)  {pts=30; pc='pos';oc='ug';emoji='🎉';title=t('trustTitleGoodTrust');   expl=src.fb.tg||'';}
-  else if(src.g===true)     {pts=-10;pc='neg';oc='ub';emoji='😬';title=t('trustTitleGoodDistrust');expl=src.fb.dg||'';}
+  if(src.g===true&&trusts)  {pts=20; pc='pos';oc='ug';emoji='🎉';title=t('trustTitleGoodTrust');   expl=src.fb.tg||'';}
+  else if(src.g===true)     {pts=-20;pc='neg';oc='ub';emoji='😬';title=t('trustTitleGoodDistrust');expl=src.fb.dg||'';}
   else if(trusts)            {pts=-20;pc='neg';oc='ub';emoji='😬';title=t('trustTitleBadTrust');    expl=src.fb.tb||'';}
   else                       {pts=20; pc='pos';oc='ug';emoji='👏';title=t('trustTitleBadDistrust'); expl=src.fb.db||'';}
   // Changer d'avis remplace les points de la source. L'ancienne correction retranchait
@@ -2166,14 +2166,23 @@ function evalLikert(src){
   return currentLevel==='pro'||currentLevel==='inter'||src.g==='free';
 }
 
-// Points d'évaluation d'une source. Mêmes valeurs qu'en Junior (trust()) :
-// reconnaître une source fiable vaut 30, écarter une source douteuse 20 ; se
-// tromper coûte 10 ou 20. Rester au milieu de l'échelle ne rapporte ni ne coûte
-// rien, pas plus qu'une source « le joueur évalue », qui n'a pas de bonne réponse.
-function ptsSource(src,confiance,mefiance){
+// Points d'évaluation d'une source, symétriques : voir juste rapporte autant que
+// se tromper coûte, que la source soit fiable ou non. L'ancien barème (+30/-10 pour
+// une source fiable, +20/-20 pour une douteuse) payait le joueur qui notait tout
+// pareil : tout à 3/7 ou tout à 5/7 rapportait +20 sur une question à deux sources
+// de chaque sorte, sans avoir rien distingué.
+// En Junior (oui/non de trust()), c'est 20. Sur l'échelle de 1 à 7, c'est 10 par cran
+// d'écart avec le milieu : 3 ou 5 valent 10, 2 ou 6 valent 20, 1 ou 7 valent 30.
+// Une note prudente engage peu, une note tranchée engage beaucoup. Le milieu (4) ne
+// rapporte ni ne coûte rien, pas plus qu'une source « le joueur évalue », qui n'a
+// pas de bonne réponse.
+function ptsSource(src,j){
   if(src.g==='free') return 0;
-  if(src.g===true) return confiance?30:(mefiance?-10:0);
-  return mefiance?20:(confiance?-20:0);
+  const juste=src.g===true?j.confiance:j.mefiance;
+  const rate =src.g===true?j.mefiance:j.confiance;
+  if(!juste&&!rate) return 0;
+  const poids=j.note?Math.abs(j.note-4)*10:20;
+  return juste?poids:-poids;
 }
 
 // Les feedbacks de source s'ouvrent sur une interjection qui suppose une réponse
@@ -2191,7 +2200,7 @@ function jugementSource(src,i){
   const note=(vue&&evalLikert(src))?(src._likertScore||0):0;
   if(!vue) return {fiable,vue,note:0,confiance:false,mefiance:false,libelle:t('vrSrcSkipped')};
   if(note) return {fiable,vue,note,confiance:note>=5,mefiance:note<=3,
-                   libelle:t('vrSrcRated').replace('{n}',note)};
+                   libelle:t('vrSrcRated').replace('{n}',note).replace('{l}',((t('likertLabels')||[])[note]||'').toLowerCase())};
   // Junior : trust() code dans um[i] la justesse du choix, pas la confiance
   const confiance=fiable?um[i]==='ug':um[i]==='ub';
   return {fiable,vue,note:0,confiance,mefiance:!confiance,
@@ -2217,7 +2226,7 @@ function recapSources(){
     else if(j.confiance) texte=j.fiable?fb.tg:fb.tb;
     else if(j.mefiance)  texte=j.fiable?fb.dg:fb.db;
     else texte=sansInterjection(j.fiable?fb.dg:fb.tb);
-    const p=j.vue?ptsSource(src,j.confiance,j.mefiance):0;
+    const p=j.vue?ptsSource(src,j):0;
     const cache=(typeof isHiddenExpert==='function')&&isHiddenExpert(src)&&(src.expertTitle||src.n);
     const meta=(libre?'':(j.fiable?t('vrSrcReliable'):t('vrSrcUnreliable'))+' · ')+j.libelle;
     return `<div class="vrsrc ${cls}">
@@ -2266,7 +2275,7 @@ function submitV(v){
   sh.forEach((src,i)=>{
     if(um[i]===undefined||!evalLikert(src)) return;
     const j=jugementSource(src,i);
-    ptsSrc+=ptsSource(src,j.confiance,j.mefiance);
+    ptsSrc+=ptsSource(src,j);
   });
   // Un seul plancher à 0, sur le total de la question : deux planchers successifs
   // (après le vote, puis après les sources) faisaient dépendre le score de l'ordre.
@@ -2338,16 +2347,15 @@ function nextQ(){
 }
 
 // Points maximum atteignables sur une question, d'après sa composition réelle :
-// une source fiable reconnue vaut 30, une source non fiable écartée 20, le vote 50
-// (60 quand « pas de consensus » est la bonne réponse, bouton réservé au niveau Pro).
-// Les sources rapportent aux trois niveaux depuis que l'évaluation à l'échelle de
-// Likert est comptée au verdict ; seules les sources « le joueur évalue » du mode
-// Créateur, qui n'ont pas de bonne réponse, ne valent rien.
+// le vote vaut 50 (60 quand « pas de consensus » est la bonne réponse, bouton
+// réservé au niveau Pro) ; chaque source vaut 20 en Junior (oui/non) et 30 sur
+// l'échelle de 1 à 7 (note 1 ou 7 dans le bon sens, voir ptsSource()). Seules les
+// sources « le joueur évalue » du mode Créateur, sans bonne réponse, ne valent rien.
 function maxPtsQuestion(q){
   let m=(q.nuance&&currentLevel==='pro')?60:50;
   (q.src||[]).forEach(src=>{
-    if(src.g===true) m+=30;
-    else if(src.g!=='free') m+=20;
+    if(src.g==='free') return;
+    m+=evalLikert(src)?30:20;
   });
   return m;
 }
